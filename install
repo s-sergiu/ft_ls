@@ -1,4 +1,19 @@
 #!/bin/bash
 
+RED="\e[31m"
+GREEN="\e[32m"
+BLUE="\e[34m"
+CYAN="\e[38;5;156m"
+DRED="\e[38;5;160m"
+ENDCOLOR="\e[0m"
+BOLD="\e[1m"
+
 git submodule update --init && make subdirs && make
 make clean && make fclean -C libs/Libft
+
+if [[ -f ft_ls ]]
+	then
+		echo -e "$BOLD$CYAN*$BOLD$BLUE Succesfully built$GREEN ft_ls$ENDCOLOR$BOLD$BLUE binary!$ENDCOLOR"
+	else
+		echo -e "$BOLD$CYAN*$BOLD$DRED Binary did not successfully build!$ENDCOLOR"
+fi
