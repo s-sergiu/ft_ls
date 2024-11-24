@@ -3,7 +3,7 @@ NAME=ft_ls
 
 # variables
 SHELL=/bin/sh
-VPATH=libs/Libft
+VPATH=libs/Libft:src
 
 # flags
 CFLAGS=-Wall -Werror -Wextra
