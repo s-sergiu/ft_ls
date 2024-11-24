@@ -16,7 +16,7 @@ SUBDIRS= libs/Libft
 OBJ=ft_ls.o \
 
 # rules
-all:$(NAME)
+all:$(NAME) 
 
 $(NAME): $(OBJ)
 
@@ -27,10 +27,12 @@ $(SUBDIRS):
 
 clean: 
 	$(RM) $(OBJ)
+	$(MAKE) clean -C $(SUBDIRS)
 
 
 fclean: clean 
 	$(RM) $(NAME)
+	$(MAKE) fclean -C $(SUBDIRS)
 
 re: clean all
 
