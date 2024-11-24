@@ -9,7 +9,7 @@ ENDCOLOR="\e[0m"
 BOLD="\e[1m"
 
 git submodule update --init && make subdirs && make
-make clean && make fclean -C libs/Libft
+make clean && make clean -C libs/Libft
 
 if [[ -f ft_ls ]]
 	then
