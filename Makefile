@@ -1,13 +1,12 @@
 # binary name
 NAME=ft_ls
 
-# overwrite env vars
+# variables
 SHELL=/bin/sh
+VPATH=libs/Libft
 
 # flags
 CFLAGS=-Wall -Werror -Wextra
-LDFLAGS=-L$(SUBDIRS)
-LDLIBS=-lft
 
 # libraries
 SUBDIRS=libs/Libft
@@ -18,20 +17,21 @@ OBJ=ft_ls.o \
 # rules
 all:$(NAME) 
 
-$(NAME): $(OBJ) | subdirs
+$(NAME): $(OBJ) -lft 
 
-subdirs : $(SUBDIRS)
+subdirs: $(SUBDIRS)
 
-$(SUBDIRS):
-	$(MAKE) -C $@
+$(SUBDIRS): 
+	@echo "Building $(SUBDIRS)..."
+	@$(MAKE) -s -C $@
 
 clean: 
 	$(RM) $(OBJ)
-	@$(MAKE) clean -s -C $(SUBDIRS)
+	$(MAKE) clean -C $(SUBDIRS)
 
 fclean: clean 
 	$(RM) $(NAME)
-	@$(MAKE) fclean -s -C $(SUBDIRS)
+	$(MAKE) fclean -C $(SUBDIRS)
 
 re: clean all
 
