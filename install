@@ -1,3 +1,4 @@
 #!/bin/bash
 
 git submodule update --init && make subdirs && make
+make clean && make fclean -C libs/Libft
