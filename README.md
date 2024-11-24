@@ -1,7 +1,7 @@
 
 ### Installing
 
- * Compiling libraries:
+ * Compiling libraries (libft):
 ```bash
 make subdirs 
 ```
