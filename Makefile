@@ -17,6 +17,7 @@ OBJ=ft_ls.o \
 
 # rules
 all:$(NAME) 
+	@$(MAKE) clean -s -C $(SUBDIRS)
 
 $(NAME): $(OBJ)
 
@@ -27,12 +28,10 @@ $(SUBDIRS):
 
 clean: 
 	$(RM) $(OBJ)
-	$(MAKE) clean -C $(SUBDIRS)
-
 
 fclean: clean 
 	$(RM) $(NAME)
-	$(MAKE) fclean -C $(SUBDIRS)
+	@$(MAKE) fclean -s -C $(SUBDIRS)
 
 re: clean all
 
