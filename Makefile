@@ -2,7 +2,7 @@
 NAME=ft_ls
 
 # overwrite env vars
-SHELL = /bin/sh
+SHELL=/bin/sh
 
 # flags
 CFLAGS=-Wall -Werror -Wextra
@@ -10,7 +10,7 @@ LDFLAGS=-L$(SUBDIRS)
 LDLIBS=-lft
 
 # libraries
-SUBDIRS= libs/Libft
+SUBDIRS=libs/Libft
 
 # object files
 OBJ=ft_ls.o \
