@@ -10,8 +10,8 @@ LDFLAGS=-L$(LIBFT_DIR)
 LDLIBS=-lft
 
 # libft
-LIBFT=libft.a
 LIBFT_DIR=libs/Libft/
+LIBFT=$(LIBFT_DIR)libft.a
 
 # object files
 OBJ=ft_ls.o \
@@ -19,9 +19,9 @@ OBJ=ft_ls.o \
 # rules
 all:$(NAME)
 
-$(NAME):$(OBJ) 
+$(NAME):$(OBJ) $(LIBFT)
 
-$(LIBFT_DIR)$(LIBFT):
+$(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
 clean: 
