@@ -23,7 +23,7 @@ $(NAME): $(OBJ)
 subdirs : $(SUBDIRS)
 
 $(SUBDIRS):
-	$(MAKE) -C $(SUBDIRS)
+	$(MAKE) -C $@
 
 clean: 
 	$(RM) $(OBJ)
