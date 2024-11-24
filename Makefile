@@ -15,7 +15,6 @@ LIBFT_DIR=libs/Libft/
 
 # object files
 OBJ=ft_ls.o \
-	test.o
 
 # rules
 all:$(NAME)
