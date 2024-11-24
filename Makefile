@@ -6,12 +6,11 @@ SHELL = /bin/sh
 
 # flags
 CFLAGS=-Wall -Werror -Wextra
-LDFLAGS=-L$(LIBFT_DIR)
+LDFLAGS=-L$(SUBDIRS)
 LDLIBS=-lft
 
-# libft
-LIBFT_DIR=libs/Libft/
-LIBFT=$(LIBFT_DIR)libft.a
+# libraries
+SUBDIRS= libs/Libft
 
 # object files
 OBJ=ft_ls.o \
@@ -19,21 +18,21 @@ OBJ=ft_ls.o \
 # rules
 all:$(NAME)
 
-$(NAME):$(OBJ) $(LIBFT)
+$(NAME): $(OBJ)
 
-$(LIBFT):
-	$(MAKE) -C $(LIBFT_DIR)
+subdirs : $(SUBDIRS)
+
+$(SUBDIRS):
+	$(MAKE) -C $(SUBDIRS)
 
 clean: 
 	$(RM) $(OBJ)
-	$(MAKE) clean -C $(LIBFT_DIR)
 
 
 fclean: clean 
 	$(RM) $(NAME)
-	$(MAKE) fclean -C $(LIBFT_DIR)
 
 re: clean all
 
 # special built-in targets
-.PHONY:all clean fclean re
+.PHONY: all clean fclean re subdirs $(SUBDIRS)
