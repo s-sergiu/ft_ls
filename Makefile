@@ -18,7 +18,7 @@ OBJ=ft_ls.o \
 # rules
 all:$(NAME) 
 
-$(NAME): $(OBJ)
+$(NAME): $(OBJ) | subdirs
 
 subdirs : $(SUBDIRS)
 
