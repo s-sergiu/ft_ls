@@ -6,7 +6,7 @@ SHELL=/bin/sh
 VPATH=libs/Libft:src
 
 # flags
-CFLAGS=-Wall -Werror -Wextra
+CFLAGS=-Wall -Werror -Wextra -Ilibs/Libft/include
 
 # libraries
 SUBDIRS=libs/Libft

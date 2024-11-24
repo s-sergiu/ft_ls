@@ -1,5 +1,5 @@
 #include <unistd.h>
-#include "../libs/Libft/include/libft.h"
+#include "libft.h"
 
 int main(int argc, char **argv, char **envp) {
 	(void)argc;
