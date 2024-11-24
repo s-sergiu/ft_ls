@@ -1,19 +1,29 @@
+# binary name
 NAME=ft_ls
 
+# overwrite env vars
 SHELL = /bin/sh
 
+# flags
 CFLAGS=-Wall -Werror -Wextra
 LDFLAGS=-L$(LIBFT_DIR)
 LDLIBS=-lft
 
+# libft
+LIBFT=libft.a
 LIBFT_DIR=libs/Libft/
 
+# object files
 OBJ=ft_ls.o \
 	test.o
 
+# rules
 all:$(NAME)
 
 $(NAME):$(OBJ) 
+
+$(LIBFT_DIR)$(LIBFT):
+	$(MAKE) -C $(LIBFT_DIR)
 
 clean: 
 	$(RM) $(OBJ)
@@ -23,4 +33,5 @@ fclean: clean
 
 re: clean all
 
+# special built-in targets
 .PHONY:all clean fclean re
