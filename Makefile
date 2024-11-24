@@ -27,11 +27,11 @@ $(SUBDIRS):
 
 clean: 
 	$(RM) $(OBJ)
-	$(MAKE) clean -C $(SUBDIRS)
+	@$(MAKE) clean -s -C $(SUBDIRS)
 
 fclean: clean 
 	$(RM) $(NAME)
-	$(MAKE) fclean -C $(SUBDIRS)
+	@$(MAKE) fclean -s -C $(SUBDIRS)
 
 re: clean all
 
