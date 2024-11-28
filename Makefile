@@ -14,10 +14,12 @@ SUBDIRS=libs/Libft
 
 # object files
 OBJ=$(NAME).o \
-	utils.o
+	utils.o \
+	errors.o
 
 TEST_OBJ=maintest.o \
-		 utils.o
+		 utils.o \
+		 errors.o
 
 # rules
 all:$(NAME) 

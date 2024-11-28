@@ -3,9 +3,9 @@
 int main(int argc, char **argv, char **envp) {
 
 	if (argc > 1)
-		read_args(argv);
+		parse_args(argv);
 	else
-		print_directory(get_pwd(envp));
+		print_directory(argv, get_pwd(envp));
 
 	return (EXIT_SUCCESS);
 }
