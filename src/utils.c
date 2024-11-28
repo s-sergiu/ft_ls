@@ -36,5 +36,7 @@ void print_directory(char **argv, char *arg) {
 		ft_printf("%s  ", dir_stream->d_name);
 		dir_stream = get_directory_stream(&dir, argv, arg);
 	}
+	if (closedir(dir) != 0)
+		print_error_and_exit(errno, argv, arg);
 	ft_printf("\n");
 }
