@@ -1,26 +1,26 @@
 # binary name
-NAME=ft_ls
-CHECK=runtests
+NAME=	ft_ls
+CHECK=	runtests
 
 # variables
-SHELL=/bin/sh
-VPATH=libs/Libft:src:src/tools:src/tools/error_handling: \
-	  tests
+SHELL=	/bin/sh
+VPATH=	libs/Libft:src:src/tools:src/tools/error_handling: \
+		tests
 
 # flags
-CFLAGS=-Wall -Werror -Wextra -Ilibs/Libft/include -Iinclude
+CFLAGS=	-Wall -Werror -Wextra -Ilibs/Libft/include -Iinclude
 
 # libraries
-SUBDIRS=libs/Libft
+SUBDIRS=	libs/Libft
 
 # object files
-OBJ=$(NAME).o \
-	utils.o \
-	errors.o
+OBJ=	$(NAME).o \
+		utils.o \
+		errors.o
 
-TEST_OBJ=maintest.o \
-		 utils.o \
-		 errors.o
+TEST_OBJ=	maintest.o \
+			utils.o \
+			errors.o
 
 # rules
 all:$(NAME) 
@@ -28,7 +28,7 @@ all:$(NAME)
 $(NAME): $(OBJ) -lft
 
 check: $(CHECK)
-	-@./$(CHECK) || true
+	-@./$(CHECK) || true  # true disables the make error output
 
 $(CHECK): $(TEST_OBJ) -lcheck -lft
 	$(CC) $^ -o $@ 
