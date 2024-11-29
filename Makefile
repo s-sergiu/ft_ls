@@ -9,6 +9,7 @@ VPATH=	libs/Libft:src:src/tools:src/tools/dir_tools:\
 
 # flags
 CFLAGS=	-Wall -Werror -Wextra -Ilibs/Libft/include -Iinclude
+CPPFLAGS= -Ilibs/Libft/include -Iinclude
 
 # libraries
 SUBDIRS=	libs/Libft
@@ -17,11 +18,12 @@ SUBDIRS=	libs/Libft
 OBJ=	$(NAME).o \
 		utils.o \
 		errors.o \
-		dir_stack.o \
+		dir_stack.o
 
 TEST_OBJ=	maintest.o \
 			utils.o \
-			errors.o
+			errors.o \
+			dir_stack.o
 
 # rules
 all:$(NAME) 
@@ -29,10 +31,10 @@ all:$(NAME)
 $(NAME): $(OBJ) -lft
 
 check: $(CHECK)
-	-@./$(CHECK) || true  # true disables the make error output
+	-@./$(CHECK) || true
 
-$(CHECK): $(TEST_OBJ) -lcheck -lft
-	$(CC) $^ -o $@ 
+$(CHECK): $(TEST_OBJ) -lgtest -lft
+	$(CXX) $^ -o $@ 
 
 subdirs: $(SUBDIRS)
 
