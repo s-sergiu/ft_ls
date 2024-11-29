@@ -4,8 +4,8 @@ CHECK=	runtests
 
 # variables
 SHELL=	/bin/sh
-VPATH=	libs/Libft:src:src/tools:src/tools/error_handling: \
-		tests
+VPATH=	libs/Libft:src:src/tools:src/tools/dir_tools:\
+		src/tools/error_handling:tests
 
 # flags
 CFLAGS=	-Wall -Werror -Wextra -Ilibs/Libft/include -Iinclude
@@ -16,7 +16,8 @@ SUBDIRS=	libs/Libft
 # object files
 OBJ=	$(NAME).o \
 		utils.o \
-		errors.o
+		errors.o \
+		dir_stack.o \
 
 TEST_OBJ=	maintest.o \
 			utils.o \
