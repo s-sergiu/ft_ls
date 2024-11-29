@@ -3,9 +3,9 @@
 void parse_args(char **argv) {
 	int	i = 1;
 
-	print_directory(argv, argv[1]);
+	print_directory(argv[1]);
 	while(argv[i] != NULL)
-		ft_printf("arg: %s\n", argv[i++]);
+		i++;
 }
 
 char *get_pwd(char **envp) {
@@ -19,24 +19,26 @@ char *get_pwd(char **envp) {
 	return (NULL);
 }
 
-struct dirent *get_directory_stream(DIR **dir, char **argv, char *arg) {
+struct dirent *get_directory_stream(DIR **dir, char *arg) {
 	if (!*dir)
 		*dir = opendir(arg);
 	if (errno) 
-		print_error_and_exit(errno, argv, arg);
+		print_error_and_exit(errno, arg);
 	return (readdir(*dir));
 }
 
-void print_directory(char **argv, char *arg) {
+void print_directory(char *arg) {
 	struct dirent	*dir_stream = NULL;
 	DIR				*dir = NULL;
 		
-	dir_stream = get_directory_stream(&dir, argv, arg);
+	dir_stream = get_directory_stream(&dir, arg);
 	while(dir_stream != NULL) {
-		ft_printf("%s  ", dir_stream->d_name);
-		dir_stream = get_directory_stream(&dir, argv, arg);
+		if (ft_strncmp(dir_stream->d_name, ".", 1)) {
+			ft_printf("%s  ", dir_stream->d_name);
+		}
+		dir_stream = get_directory_stream(&dir, arg);
 	}
 	if (closedir(dir) != 0)
-		print_error_and_exit(errno, argv, arg);
+		print_error_and_exit(errno, arg);
 	ft_printf("\n");
 }
