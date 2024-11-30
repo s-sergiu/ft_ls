@@ -30,8 +30,8 @@ all:$(NAME)
 
 $(NAME): $(OBJ) -lft
 
-check: $(CHECK)
-	-@./$(CHECK) || true
+tests: $(CHECK)
+	@./$(CHECK)
 
 $(CHECK): $(TEST_OBJ) -lgtest -lft
 	$(CXX) $^ -o $@ 
