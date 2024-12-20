@@ -10,6 +10,7 @@ VPATH=	libs/Libft:src:src/tools:src/tools/dir_tools:\
 # flags
 CFLAGS=	-Wall -Werror -Wextra -Ilibs/Libft/include -Iinclude
 CPPFLAGS= -Ilibs/Libft/include -Iinclude
+VFLAGS= --leak-check=full
 
 # libraries
 SUBDIRS=	libs/Libft

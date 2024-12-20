@@ -4,11 +4,8 @@ extern "C" {
 	#include "ft_ls.h"
 }
 
-TEST(test, ok) {
-		
-	EXPECT_TRUE(1);
+TEST(test, test) {
 }
-
 
 int main(int argc, char **argv) {
 	::testing::InitGoogleTest(&argc, argv);
