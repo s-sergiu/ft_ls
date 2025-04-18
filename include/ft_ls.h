@@ -6,11 +6,8 @@
 #include <errno.h>
 #include <sys/stat.h>
 #include "libft.h"
+#include <stdio.h>
 
-char			*get_pwd(char**);
-void			print_directory(char*);
-void			parse_args(char**);
-void			print_error_and_exit(int, char*);
-struct dirent	*get_directory_stream(DIR**, char*);
+void			list_directory(char*);
 
 #endif
