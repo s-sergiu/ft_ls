@@ -21,7 +21,7 @@ OBJ=	$(NAME).o \
 		errors.o \
 		dir_stack.o
 
-TEST_OBJ=	maintest.o \
+TEST_OBJ=	main.o \
 			utils.o \
 			errors.o \
 			dir_stack.o
