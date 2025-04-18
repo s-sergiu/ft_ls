@@ -8,6 +8,6 @@
 #include "libft.h"
 #include <stdio.h>
 
-void			list_directory(char*);
+void	list_directory(char*);
 
 #endif

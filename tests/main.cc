@@ -19,6 +19,14 @@ std::string exec_ft_ls(const std::string &command) {
 	return (result);
 }
 
+TEST(FT_LS, noArguments) {
+	system("mkdir emptyDir; export PWD=/home/ssergiu/projects/ft_ls/emtpyDir");
+	std::string original_command = exec_ft_ls("cd emptyDir && ls");
+	std::string my_command = exec_ft_ls("cd emptyDir && ../ft_ls");
+	EXPECT_EQ(my_command, original_command);
+	system("rmdir emptyDir");
+}
+
 TEST(FT_LS, emptyDirectory) {
 	system("mkdir emptyDir");
 	std::string original_command = exec_ft_ls("ls emptyDir");
