@@ -23,6 +23,8 @@ struct s_dir*	dir_new(char *arg)
 {
 	struct s_dir	*new;
 	new = (struct s_dir*)malloc(sizeof(struct s_dir));
+	if (!arg)
+		return (NULL);
 	if (!new)
 		return (NULL);
 	ft_strlcat(new->file, arg, ft_strlen(arg - 1));

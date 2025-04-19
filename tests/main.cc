@@ -5,8 +5,8 @@ extern "C" {
 }
 
 std::string exec(const std::string &command) {
-	char buffer[128];
-	std::string result = "";
+	char		buffer[128];
+	std::string	result = "";
 
 	FILE *pipe = popen(command.c_str(), "r");
 	if (!pipe)
@@ -17,6 +17,23 @@ std::string exec(const std::string &command) {
 	}
 	pclose(pipe);
 	return (result);
+}
+
+TEST(LIST, new_node_with_content) {
+	struct s_dir	*list = NULL; 
+	std::string		content = "new";
+
+	list = dir_new((char *)content.c_str());
+
+	EXPECT_NE(nullptr, list);
+}
+
+TEST(LIST, new_node_no_content) {
+	struct s_dir	*list = NULL; 
+
+	list = dir_new(NULL);
+
+	EXPECT_EQ(nullptr, list);
 }
 
 TEST(FT_LS, noArguments) {
