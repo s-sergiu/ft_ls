@@ -4,7 +4,7 @@ extern "C" {
 	#include "ft_ls.h"
 }
 
-std::string exec_ft_ls(const std::string &command) {
+std::string exec(const std::string &command) {
 	char buffer[128];
 	std::string result = "";
 
@@ -21,32 +21,32 @@ std::string exec_ft_ls(const std::string &command) {
 
 TEST(FT_LS, noArguments) {
 	system("mkdir emptyDir; export PWD=/home/ssergiu/projects/ft_ls/emtpyDir");
-	std::string original_command = exec_ft_ls("cd emptyDir && ls");
-	std::string my_command = exec_ft_ls("cd emptyDir && ../ft_ls");
+	std::string original_command = exec("cd emptyDir && ls");
+	std::string my_command = exec("cd emptyDir && ../ft_ls");
 	EXPECT_EQ(my_command, original_command);
 	system("rmdir emptyDir");
 }
 
 TEST(FT_LS, emptyDirectory) {
 	system("mkdir emptyDir");
-	std::string original_command = exec_ft_ls("ls emptyDir");
-	std::string my_command = exec_ft_ls("./ft_ls emptyDir");
+	std::string original_command = exec("ls emptyDir");
+	std::string my_command = exec("./ft_ls emptyDir");
 	EXPECT_EQ(my_command, original_command);
 	system("rmdir emptyDir");
 }
 
 TEST(FT_LS, directoryWithOneFile) {
 	system("mkdir emptyDir; touch emptyDir/file");
-	std::string original_command = exec_ft_ls("ls emptyDir");
-	std::string my_command = exec_ft_ls("./ft_ls emptyDir");
+	std::string original_command = exec("ls emptyDir");
+	std::string my_command = exec("./ft_ls emptyDir");
 	EXPECT_EQ(my_command, original_command);
 	system("rm -rf emptyDir");
 }
 
 TEST(FT_LS, directoryWithTwoFiles) {
-	system("mkdir emptyDir; touch emptyDir/file; touch emptyDir/file1");
-	std::string original_command = exec_ft_ls("ls emptyDir");
-	std::string my_command = exec_ft_ls("./ft_ls emptyDir");
+	system("mkdir emptyDir; touch emptyDir/file; touch emptyDir/filf");
+	std::string original_command = exec("ls emptyDir");
+	std::string my_command = exec("./ft_ls emptyDir");
 	EXPECT_EQ(my_command, original_command);
 	system("rm -rf emptyDir");
 }

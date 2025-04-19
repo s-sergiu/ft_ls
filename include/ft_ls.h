@@ -2,12 +2,12 @@
 #define LS_HPP
 
 #include <dirent.h>
-#include <string.h>
-#include <errno.h>
 #include <sys/stat.h>
 #include "libft.h"
-#include <stdio.h>
 
-void	list_directory(char*);
+#define TYPE_FILE 8
+#define TYPE_FOLDER 4
+
+void	list_directory(char**);
 
 #endif
