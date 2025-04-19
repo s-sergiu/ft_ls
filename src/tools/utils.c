@@ -1,41 +1,72 @@
 #include "ft_ls.h"
 
-void	list_item(struct dirent *dir)
-{
-	struct stat		file_stats;
+struct s_dir	*directory = NULL;
 
-	stat(STDOUT, &file_stats);
-	if (dir->d_name[0] == '.')
-		return ;
-	ft_printf("%s", dir->d_name);
-	if (file_stats.st_rdev != 0)
-		ft_printf("  ");
-	else
-		ft_printf("\n");
+void	list_dirs(struct s_dir* dir, void (*f)(void *))
+{
+	struct s_dir	*curr;
+
+	curr = dir;
+	while (curr)
+	{
+		f(curr->file);
+		curr = curr->next;
+	}
 }
 
-struct dirent*	read_directory(DIR *dir)
+void	dir_add_front(struct s_dir** lst, struct s_dir* new) {
+	new->next = *lst;
+	*lst = new;
+}
+
+struct s_dir*	dir_new(char *arg) 
+{
+	struct s_dir	*new;
+	new = (struct s_dir*)malloc(sizeof(struct s_dir));
+	if (!new)
+		return (NULL);
+	ft_strlcat(new->file, arg, ft_strlen(arg - 1));
+	new->next = NULL;
+	return (new);
+}
+
+void	add_file_to_list(struct dirent *dir)
+{
+	if (dir->d_name[0] == '.')
+		return ;
+	dir_add_front(&directory, dir_new(dir->d_name));
+}
+
+struct dirent*	scan_dir(DIR *dir)
 {
 	struct dirent	*dir_struct;
 
 	dir_struct = readdir(dir);
 	if (!dir_struct)
 		return (NULL);
-	list_item(dir_struct);
-	return 	(read_directory(dir));
+	add_file_to_list(dir_struct);
+	return 	(scan_dir(dir));
 }
 
-void	list_directory(char **args)
+void	print_item(void *item) 
 {
 	struct stat		file_stats;
-	DIR*			dir;
 
 	stat(STDOUT, &file_stats);
+	if (file_stats.st_rdev != 0)
+		ft_printf("%s  \n", item);
+	else
+		ft_printf("%s\n", item);
+}
+
+void	execute(char **args)
+{
+	DIR*			dir;
+
 	dir = opendir(args[1]);
 	if (!dir)
 		return ;
 	if (*args[1])
-		read_directory(dir);
-	if (file_stats.st_rdev != 0)
-		ft_printf("\n");
+		scan_dir(dir);
+	list_dirs(directory, print_item);
 }
