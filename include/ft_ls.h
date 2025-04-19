@@ -5,9 +5,12 @@
 #include <sys/stat.h>
 #include "libft.h"
 
-#define TYPE_FILE 8
-#define TYPE_FOLDER 4
+#define T_FILE 8
+#define T_FOLDER 4
+#define STDOUT "/dev/stdout"
 
-void	list_directory(char**);
+void			list_directory(char**);
+struct dirent*	read_directory(DIR *dir);
+void			list_item(struct dirent *dir);
 
 #endif

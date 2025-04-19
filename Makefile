@@ -31,7 +31,7 @@ all:$(NAME)
 
 $(NAME): $(OBJ) -lft
 
-tests: $(CHECK) $(NAME)
+test: $(CHECK) $(NAME)
 	@./$(CHECK)
 
 $(CHECK): $(TEST_OBJ) -lgtest -lft
