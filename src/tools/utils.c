@@ -54,7 +54,7 @@ void	print_item(void *item)
 
 	stat(STDOUT, &file_stats);
 	if (file_stats.st_rdev != 0)
-		ft_printf("%s  \n", item);
+		ft_printf("%s  ", item);
 	else
 		ft_printf("%s\n", item);
 }
@@ -62,11 +62,15 @@ void	print_item(void *item)
 void	execute(char **args)
 {
 	DIR*			dir;
+	struct stat		file_stats;
 
+	stat(STDOUT, &file_stats);
 	dir = opendir(args[1]);
 	if (!dir)
 		return ;
 	if (*args[1])
 		scan_dir(dir);
 	list_dirs(directory, print_item);
+	if (file_stats.st_rdev != 0)
+		ft_printf("\n");
 }
