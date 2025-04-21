@@ -9,7 +9,7 @@ VPATH=	libs/Libft:src:src/tools:src/tools/dir_tools:\
 
 # flags
 CFLAGS=	-Wall -Werror -Wextra -Ilibs/Libft/include -Iinclude
-CPPFLAGS= -Ilibs/Libft/include -Iinclude
+CPPFLAGS= -Ilibs/Libft/include -Iinclude -I$(HOME)/.brew/include
 VFLAGS= --leak-check=full
 
 # libraries
