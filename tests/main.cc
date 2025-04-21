@@ -23,7 +23,7 @@ TEST(LIST, new_node_with_content) {
 	struct s_dir	*list = NULL; 
 	std::string		content = "new";
 
-	list = dir_new((char *)content.c_str());
+	list = s_dir_new((char *)content.c_str());
 
 	EXPECT_NE(nullptr, list);
 }
@@ -31,7 +31,7 @@ TEST(LIST, new_node_with_content) {
 TEST(LIST, new_node_no_content) {
 	struct s_dir	*list = NULL; 
 
-	list = dir_new(NULL);
+	list = s_dir_new(NULL);
 
 	EXPECT_EQ(nullptr, list);
 }

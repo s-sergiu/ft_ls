@@ -1,64 +1,64 @@
 #include "ft_ls.h"
 
-struct s_dir*	return_dir(void)
+struct s_dir*	get_directory_list(void)
 {
 	static struct s_dir	directory;
+
 	return &directory;
 }
 
 void	list_dirs(void (*f)(void *))
 {
-	struct s_dir	*curr;
-	struct s_dir*	dir;
+	struct s_dir	*index;
+	struct s_dir*	dir_list;
 
-	dir = return_dir();
-	curr = dir->head;
-	while (curr->next)
+	dir_list = get_directory_list();
+	index = dir_list->head;
+	while (index->next)
 	{
-		f(curr->file);
-		curr = curr->next;
+		f(index->file);
+		index = index->next;
 	}
 }
 
-void	dir_add_front(struct s_dir** lst, struct s_dir* new) {
-	if ((*lst)->head == NULL)
-		new->next = *lst;
-	else
-		new->next = (*lst)->head;
-	(*lst)->head= new;
-}
-
-struct s_dir*	dir_new(char *arg) 
+struct s_dir*	s_dir_new(char *name)
 {
 	struct s_dir	*new;
 	new = (struct s_dir*)malloc(sizeof(struct s_dir));
-	if (!arg)
+	if (!new || !name)
 		return (NULL);
-	if (!new)
-		return (NULL);
-	ft_strlcat(new->file, arg, ft_strlen(arg - 1));
+	ft_strlcat(new->file, name, ft_strlen(name - 1));
 	new->next = NULL;
 	return (new);
 }
 
-void	add_file_to_list(struct dirent *dir)
-{
-	struct s_dir*	directory;
-	directory = return_dir();
-	if (dir->d_name[0] == '.')
-		return ;
-	dir_add_front(&directory, dir_new(dir->d_name));
+void	s_dir_add_front(struct s_dir* file) {
+	struct s_dir*	dir_list;
+
+	dir_list = get_directory_list();
+	if (dir_list->head == NULL)
+		file->next = dir_list;
+	else
+		file->next = dir_list->head;
+	dir_list->head= file;
 }
 
-struct dirent*	scan_dir(DIR *dir)
+void	add_file_to_list(struct dirent *entry)
 {
-	struct dirent	*dir_struct;
+	if (entry->d_name[0] == '.')
+		return ;
+	s_dir_add_front(s_dir_new(entry->d_name));
+}
 
-	dir_struct = readdir(dir);
-	if (!dir_struct)
+struct dirent*	scan_dir(DIR *stream)
+{
+	struct dirent	*entry;
+
+	entry = readdir(stream);
+	if (!entry)
 		return (NULL);
-	add_file_to_list(dir_struct);
-	return 	(scan_dir(dir));
+	add_file_to_list(entry);
+	return 	(scan_dir(stream));
 }
 
 void	print_item(void *item) 
@@ -74,15 +74,15 @@ void	print_item(void *item)
 
 void	execute(char **args)
 {
-	DIR*			dir;
+	DIR*			stream;
 	struct stat		file_stats;
 
 	stat(STDOUT, &file_stats);
-	dir = opendir(args[1]);
-	if (!dir)
+	stream = opendir(args[1]);
+	if (!stream)
 		return ;
 	if (*args[1])
-		scan_dir(dir);
+		scan_dir(stream);
 	list_dirs(print_item);
 	if (file_stats.st_rdev != 0)
 		ft_printf("\n");
