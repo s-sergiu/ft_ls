@@ -32,22 +32,23 @@ struct s_dir*	s_dir_new(char *name)
 	return (new);
 }
 
-void	s_dir_add_front(struct s_dir* file) {
-	struct s_dir*	dir_list;
-
-	dir_list = get_directory_list();
-	if (dir_list->head == NULL)
-		file->next = dir_list;
+void	s_dir_add_front(struct s_dir** dir_list, struct s_dir* file) 
+{
+	if ((*dir_list)->head == NULL)
+		file->next = *dir_list;
 	else
-		file->next = dir_list->head;
-	dir_list->head= file;
+		file->next = (*dir_list)->head;
+	(*dir_list)->head= file;
 }
 
 void	add_file_to_list(struct dirent *entry)
 {
+	struct s_dir	*dir_list;
+
+	dir_list = get_directory_list();
 	if (entry->d_name[0] == '.')
 		return ;
-	s_dir_add_front(s_dir_new(entry->d_name));
+	s_dir_add_front(&dir_list, s_dir_new(entry->d_name));
 }
 
 struct dirent*	scan_dir(DIR *stream)

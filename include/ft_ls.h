@@ -16,7 +16,7 @@ struct s_dir {
 };
 
 struct s_dir*	get_directory_list(void);
-void			s_dir_add_front(struct s_dir*);
+void			s_dir_add_front(struct s_dir**, struct s_dir*);
 struct s_dir*	s_dir_new(char*);
 void			list_dirs(void (*f)(void*));
 void			execute(char**);
