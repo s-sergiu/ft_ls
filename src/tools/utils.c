@@ -1,13 +1,19 @@
 #include "ft_ls.h"
 
-struct s_dir	*directory = NULL;
+struct s_dir*	return_dir(void)
+{
+	static struct s_dir	directory;
+	return &directory;
+}
 
-void	list_dirs(struct s_dir* dir, void (*f)(void *))
+void	list_dirs(void (*f)(void *))
 {
 	struct s_dir	*curr;
+	struct s_dir*	dir;
 
-	curr = dir;
-	while (curr)
+	dir = return_dir();
+	curr = dir->head;
+	while (curr->next)
 	{
 		f(curr->file);
 		curr = curr->next;
@@ -15,8 +21,11 @@ void	list_dirs(struct s_dir* dir, void (*f)(void *))
 }
 
 void	dir_add_front(struct s_dir** lst, struct s_dir* new) {
-	new->next = *lst;
-	*lst = new;
+	if ((*lst)->head == NULL)
+		new->next = *lst;
+	else
+		new->next = (*lst)->head;
+	(*lst)->head= new;
 }
 
 struct s_dir*	dir_new(char *arg) 
@@ -34,6 +43,8 @@ struct s_dir*	dir_new(char *arg)
 
 void	add_file_to_list(struct dirent *dir)
 {
+	struct s_dir*	directory;
+	directory = return_dir();
 	if (dir->d_name[0] == '.')
 		return ;
 	dir_add_front(&directory, dir_new(dir->d_name));
@@ -72,7 +83,7 @@ void	execute(char **args)
 		return ;
 	if (*args[1])
 		scan_dir(dir);
-	list_dirs(directory, print_item);
+	list_dirs(print_item);
 	if (file_stats.st_rdev != 0)
 		ft_printf("\n");
 }
