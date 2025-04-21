@@ -4,6 +4,21 @@ extern "C" {
 	#include "ft_ls.h"
 }
 
+int	list_size(struct s_dir *lst)
+{
+	int				i;
+	struct s_dir	*tmp;
+
+	tmp = lst->head;
+	i = 0;
+	while (tmp->next)
+	{
+		tmp = tmp->next;
+		i++;
+	}
+	return (i);
+}
+
 std::string exec(const std::string &command) {
 	char		buffer[128];
 	std::string	result = "";
@@ -19,22 +34,32 @@ std::string exec(const std::string &command) {
 	return (result);
 }
 
-TEST(LIST, new_node_with_content) {
-	struct s_dir	*list = NULL; 
-	std::string		content = "new";
+/*---------------------LIST----------------------------*/
 
-	list = s_dir_new((char *)content.c_str());
+class StackTest : public ::testing::Test {
+	protected:
+		struct s_dir	*stack;
 
-	EXPECT_NE(nullptr, list);
+
+	void SetUp() override {
+		this->stack = get_directory_list();
+	}
+
+	void TearDown() override {
+	}
+};
+
+TEST_F(StackTest, newNode_isEmpty) {
+	EXPECT_EQ(true, is_empty(stack));
 }
 
-TEST(LIST, new_node_no_content) {
-	struct s_dir	*list = NULL; 
-
-	list = s_dir_new(NULL);
-
-	EXPECT_EQ(nullptr, list);
+TEST_F(StackTest, afterOnePush_isNotEmpty) {
+	s_dir_push(&stack, "one");
+	EXPECT_EQ(false, is_empty(stack));
+	EXPECT_EQ(1, list_size(stack));
 }
+
+/*----------------------FT_LS----------------------------*/
 
 TEST(FT_LS, noArguments) {
 	system("mkdir emptyDir; export PWD=/home/ssergiu/projects/ft_ls/emtpyDir");

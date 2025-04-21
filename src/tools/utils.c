@@ -1,10 +1,17 @@
 #include "ft_ls.h"
 
+unsigned char	is_empty(struct s_dir *node)
+{
+	(void)node;
+	return (!node->size);
+}
 struct s_dir*	get_directory_list(void)
 {
 	static struct s_dir	directory;
 
-	return &directory;
+	if (!directory.next)
+		directory.size = 0;
+	return (&directory);
 }
 
 void	list_dirs(void (*f)(void *))
@@ -21,7 +28,7 @@ void	list_dirs(void (*f)(void *))
 	}
 }
 
-struct s_dir*	s_dir_new(char *name)
+struct s_dir*	s_dir_new(const char *name)
 {
 	struct s_dir	*new;
 	new = (struct s_dir*)malloc(sizeof(struct s_dir));
@@ -32,13 +39,19 @@ struct s_dir*	s_dir_new(char *name)
 	return (new);
 }
 
-void	s_dir_add_front(struct s_dir** dir_list, struct s_dir* file) 
+int	s_dir_push(struct s_dir** dir_list, const char *name) 
 {
+	if (!(*dir_list))
+		return (-1);
+	struct s_dir	*file;
+	file = s_dir_new(name);
 	if ((*dir_list)->head == NULL)
 		file->next = *dir_list;
 	else
 		file->next = (*dir_list)->head;
 	(*dir_list)->head= file;
+	(*dir_list)->size = 1;
+	return (0);
 }
 
 void	add_file_to_list(struct dirent *entry)
@@ -48,7 +61,8 @@ void	add_file_to_list(struct dirent *entry)
 	dir_list = get_directory_list();
 	if (entry->d_name[0] == '.')
 		return ;
-	s_dir_add_front(&dir_list, s_dir_new(entry->d_name));
+	if (s_dir_push(&dir_list, entry->d_name) < 0)
+		return ;
 }
 
 struct dirent*	scan_dir(DIR *stream)

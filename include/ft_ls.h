@@ -11,13 +11,15 @@
 
 struct s_dir {
 	char			file[128];
+	int				size;
 	struct s_dir	*head;
 	struct s_dir	*next;
 };
 
+unsigned char	is_empty(struct s_dir *node);
 struct s_dir*	get_directory_list(void);
-void			s_dir_add_front(struct s_dir**, struct s_dir*);
-struct s_dir*	s_dir_new(char*);
+int				s_dir_push(struct s_dir**, const char *name);
+struct s_dir*	s_dir_new(const char*);
 void			list_dirs(void (*f)(void*));
 void			execute(char**);
 struct dirent*	scan_dir(DIR*);
