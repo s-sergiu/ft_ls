@@ -9,7 +9,7 @@ struct s_dir*	get_directory_list(void)
 {
 	static struct s_dir	directory;
 
-	if (!directory.next)
+	if (!directory.next_entry)
 		directory.size = 0;
 	return (&directory);
 }
@@ -21,10 +21,10 @@ void	list_dirs(void (*f)(void *))
 
 	dir_list = get_directory_list();
 	index = dir_list->head;
-	while (index->next)
+	while (index->next_entry)
 	{
 		f(index->file);
-		index = index->next;
+		index = index->next_entry;
 	}
 }
 
@@ -35,8 +35,16 @@ struct s_dir*	s_dir_new(const char *name)
 	if (!new || !name)
 		return (NULL);
 	ft_strlcat(new->file, name, ft_strlen(name - 1));
-	new->next = NULL;
+	new->next_entry = NULL;
 	return (new);
+}
+
+int	s_dir_pop(struct s_dir** dir_list)
+{
+	if ((*dir_list)->size == 0)
+		return -1;
+	(*dir_list)->size--;
+	return -1;
 }
 
 int	s_dir_push(struct s_dir** dir_list, const char *name) 
@@ -46,11 +54,11 @@ int	s_dir_push(struct s_dir** dir_list, const char *name)
 	struct s_dir	*file;
 	file = s_dir_new(name);
 	if ((*dir_list)->head == NULL)
-		file->next = *dir_list;
+		file->next_entry = *dir_list;
 	else
-		file->next = (*dir_list)->head;
+		file->next_entry = (*dir_list)->head;
 	(*dir_list)->head= file;
-	(*dir_list)->size = 1;
+	(*dir_list)->size++;
 	return (0);
 }
 

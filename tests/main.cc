@@ -4,21 +4,6 @@ extern "C" {
 	#include "ft_ls.h"
 }
 
-int	list_size(struct s_dir *lst)
-{
-	int				i;
-	struct s_dir	*tmp;
-
-	tmp = lst->head;
-	i = 0;
-	while (tmp->next)
-	{
-		tmp = tmp->next;
-		i++;
-	}
-	return (i);
-}
-
 std::string exec(const std::string &command) {
 	char		buffer[128];
 	std::string	result = "";
@@ -56,7 +41,45 @@ TEST_F(StackTest, newNode_isEmpty) {
 TEST_F(StackTest, afterOnePush_isNotEmpty) {
 	s_dir_push(&stack, "one");
 	EXPECT_EQ(false, is_empty(stack));
-	EXPECT_EQ(1, list_size(stack));
+	EXPECT_EQ(1, stack->size);
+}
+
+TEST_F(StackTest, afterOnePushOnePop_isEmpty) {
+	s_dir_push(&stack, "one");
+	s_dir_pop(&stack);
+	EXPECT_EQ(true, is_empty(stack));
+	EXPECT_EQ(0, stack->size);
+}
+
+TEST_F(StackTest, newStackPop_isEmpty_underflow) {
+	EXPECT_EQ(-1, s_dir_pop(&stack));
+	EXPECT_EQ(0, stack->size);
+}
+
+TEST_F(StackTest, afterTwoPushOnePop_sizeOne) {
+	s_dir_push(&stack, "one");
+	s_dir_push(&stack, "two");
+	s_dir_pop(&stack);
+	EXPECT_EQ(false, is_empty(stack));
+	EXPECT_EQ(1, stack->size);
+}
+
+TEST_F(StackTest, afterTwoPushTwoPop_sizeZero) {
+	s_dir_push(&stack, "one");
+	s_dir_push(&stack, "two");
+	s_dir_pop(&stack);
+	s_dir_pop(&stack);
+	EXPECT_EQ(true, is_empty(stack));
+	EXPECT_EQ(0, stack->size);
+}
+
+TEST_F(StackTest, afterTwoPushThreePop_underflow) {
+	s_dir_push(&stack, "one");
+	s_dir_push(&stack, "two");
+	s_dir_pop(&stack);
+	s_dir_pop(&stack);
+	EXPECT_EQ(-1, s_dir_pop(&stack));
+	EXPECT_EQ(0, stack->size);
 }
 
 /*----------------------FT_LS----------------------------*/
