@@ -1,0 +1,10 @@
+#!/bin/bash
+
+cmake -S . -B build
+cmake --build build
+if [[ $1 == "-v" ]]; then
+	cd build && ctest --output-on-failure
+else
+	cd build && ctest
+fi
+
