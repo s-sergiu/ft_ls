@@ -2,9 +2,18 @@
 
 cmake -S . -B build
 cmake --build build
-if [[ $1 == "-v" ]]; then
-	cd build && ctest --output-on-failure
-else
-	cd build && ctest
-fi
 
+if [[ $1 == "-v" ]]; then
+	if [[ $2 == "-r" ]]; then
+		cd build && ctest --output-on-failure --rerun-failed
+	else
+		cd build && ctest --output-on-failure
+	fi
+elif [[ $1 == "-r" ]]; then
+	if [[ $2 == "-v" ]]; then
+		cd build && ctest --output-on-failure --rerun-failed
+	else
+		cd build && ctest --rerun-failed
+	fi
+fi
+cd build && ctest

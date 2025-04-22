@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <filesystem>
 
 extern "C" {
 	#include "ft_ls.h"
@@ -85,9 +86,9 @@ TEST_F(StackTest, afterTwoPushThreePop_underflow) {
 /*----------------------FT_LS----------------------------*/
 
 TEST(FT_LS, noArguments) {
-	system("mkdir emptyDir; export PWD=/home/ssergiu/projects/ft_ls/emtpyDir");
+	system("mkdir emptyDir && cd emptyDir");
 	std::string original_command = exec("cd emptyDir && ls");
-	std::string my_command = exec("cd emptyDir && ../ft_ls");
+	std::string my_command = exec("export PATH=$PATH:$PWD && cd emptyDir && ft_ls");
 	EXPECT_EQ(my_command, original_command);
 	system("rmdir emptyDir");
 }
@@ -95,23 +96,23 @@ TEST(FT_LS, noArguments) {
 TEST(FT_LS, emptyDirectory) {
 	system("mkdir emptyDir");
 	std::string original_command = exec("ls emptyDir");
-	std::string my_command = exec("./ft_ls emptyDir");
+	std::string my_command = exec("export PATH=$PATH:$PWD && ft_ls emptyDir");
 	EXPECT_EQ(my_command, original_command);
 	system("rmdir emptyDir");
 }
 
 TEST(FT_LS, directoryWithOneFile) {
-	system("mkdir emptyDir; touch emptyDir/file");
+	system("mkdir emptyDir && touch emptyDir/file");
 	std::string original_command = exec("ls emptyDir");
-	std::string my_command = exec("./ft_ls emptyDir");
+	std::string my_command = exec("../ft_ls emptyDir 2> /dev/null || ./ft_ls emptyDir");
 	EXPECT_EQ(my_command, original_command);
 	system("rm -rf emptyDir");
 }
 
 TEST(FT_LS, directoryWithTwoFiles) {
-	system("mkdir emptyDir; touch emptyDir/file; touch emptyDir/filf");
+	system("mkdir emptyDir && touch emptyDir/file && touch emptyDir/filf");
 	std::string original_command = exec("ls emptyDir");
-	std::string my_command = exec("./ft_ls emptyDir");
+	std::string my_command = exec("../ft_ls emptyDir 2> /dev/null || ./ft_ls emptyDir");
 	EXPECT_EQ(my_command, original_command);
 	system("rm -rf emptyDir");
 }
