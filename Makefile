@@ -8,12 +8,13 @@ VPATH=	libs/Libft:src:src/tools:src/tools/dir_tools:\
 		src/tools/error_handling:tests
 
 # flags
-CFLAGS=	-Wall -Werror -Wextra -Ilibs/Libft/include -Iinclude
-CPPFLAGS= -Ilibs/Libft/include -Iinclude -I$(HOME)/.brew/include
-VFLAGS= --leak-check=full
+CFLAGS=		-Wall -Werror -Wextra -Ilibs/Libft/include -Iinclude
+CPPFLAGS=	-Ilibs/Libft/include -Iinclude -I$(HOME)/.brew/include
+VFLAGS=		--leak-check=full
 
 # libraries
 SUBDIRS=	libs/Libft
+LIBFT=		$(SUBDIRS)/libft.a
 
 # object files
 OBJ=	$(NAME).o \
@@ -27,7 +28,7 @@ TEST_OBJ=	main.o \
 			dir_stack.o
 
 # rules
-all:$(NAME) 
+all: $(LIBFT) $(NAME)
 
 $(NAME): $(OBJ) -lft
 
@@ -37,11 +38,12 @@ test: $(CHECK) $(NAME)
 $(CHECK): $(TEST_OBJ) -lgtest -lft
 	$(CXX) $^ -o $@ 
 
-subdirs: $(SUBDIRS)
-
-$(SUBDIRS): 
+$(LIBFT):
+ifeq ($(shell git submodule status | awk '{print $1}' | head -c 1), -)
+	git submodule update --init
+endif
 	@echo "Building $(SUBDIRS)..."
-	@$(MAKE) -s -C $@
+	@$(MAKE) -s -C $(SUBDIRS)
 
 clean: 
 	$(RM) $(OBJ) $(TEST_OBJ)
