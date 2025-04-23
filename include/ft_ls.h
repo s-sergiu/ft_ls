@@ -4,6 +4,7 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include "libft.h"
+#include <stdlib.h>
 
 #define T_FILE 8
 #define T_FOLDER 4
@@ -18,6 +19,8 @@ struct s_dir {
 
 unsigned char	is_empty(struct s_dir*);
 struct s_dir*	get_directory_list(void);
+int				s_dir_free_memory(struct s_dir* list);
+int				s_dir_is_sorted(struct s_dir* list);
 void			s_dir_sort_alphabetically(struct s_dir*);
 int				s_dir_push(struct s_dir**, const char*);
 int				s_dir_pop(struct s_dir**);

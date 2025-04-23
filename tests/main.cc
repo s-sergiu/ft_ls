@@ -40,14 +40,15 @@ TEST_F(StackTest, newNode_isEmpty) {
 }
 
 TEST_F(StackTest, afterOnePush_isNotEmpty) {
-	s_dir_push(&stack, "one");
+	EXPECT_EQ(true, s_dir_push(&stack, "one"));
 	EXPECT_EQ(false, is_empty(stack));
 	EXPECT_EQ(1, stack->size);
 }
 
 TEST_F(StackTest, afterOnePushOnePop_isEmpty) {
-	s_dir_push(&stack, "one");
-	s_dir_pop(&stack);
+	EXPECT_EQ(true, s_dir_push(&stack, "one"));
+	EXPECT_STREQ(stack->head->file, "one");
+	EXPECT_EQ(true, s_dir_pop(&stack));
 	EXPECT_EQ(true, is_empty(stack));
 	EXPECT_EQ(0, stack->size);
 }
@@ -58,29 +59,54 @@ TEST_F(StackTest, newStackPop_isEmpty_underflow) {
 }
 
 TEST_F(StackTest, afterTwoPushOnePop_sizeOne) {
-	s_dir_push(&stack, "one");
-	s_dir_push(&stack, "two");
-	s_dir_pop(&stack);
+	EXPECT_EQ(true, s_dir_push(&stack, "one"));
+	EXPECT_STREQ(stack->head->file, "one");
+	EXPECT_EQ(true, s_dir_push(&stack, "two"));
+	EXPECT_STREQ(stack->head->file, "two");
+	EXPECT_EQ(true, s_dir_pop(&stack));
 	EXPECT_EQ(false, is_empty(stack));
 	EXPECT_EQ(1, stack->size);
 }
 
 TEST_F(StackTest, afterTwoPushTwoPop_sizeZero) {
-	s_dir_push(&stack, "one");
-	s_dir_push(&stack, "two");
-	s_dir_pop(&stack);
-	s_dir_pop(&stack);
+	EXPECT_EQ(true, s_dir_push(&stack, "one"));
+	EXPECT_STREQ(stack->head->file, "one");
+	EXPECT_EQ(true, s_dir_push(&stack, "two"));
+	EXPECT_STREQ(stack->head->file, "two");
+	EXPECT_EQ(true, s_dir_pop(&stack));
+	EXPECT_EQ(true, s_dir_pop(&stack));
 	EXPECT_EQ(true, is_empty(stack));
 	EXPECT_EQ(0, stack->size);
 }
 
 TEST_F(StackTest, afterTwoPushThreePop_underflow) {
-	s_dir_push(&stack, "one");
-	s_dir_push(&stack, "two");
-	s_dir_pop(&stack);
-	s_dir_pop(&stack);
+	EXPECT_EQ(true, s_dir_push(&stack, "one"));
+	EXPECT_STREQ(stack->head->file, "one");
+	EXPECT_EQ(true, s_dir_push(&stack, "two"));
+	EXPECT_STREQ(stack->head->file, "two");
+	EXPECT_EQ(true, s_dir_pop(&stack));
+	EXPECT_EQ(true, s_dir_pop(&stack));
 	EXPECT_EQ(-1, s_dir_pop(&stack));
 	EXPECT_EQ(0, stack->size);
+}
+
+/*----------------------SORT----------------------------*/
+
+class SortTest : public ::testing::Test {
+	protected:
+		struct s_dir	*stack;
+
+
+	void SetUp() override {
+		this->stack = get_directory_list();
+	}
+
+	void TearDown() override {
+	}
+};
+
+TEST_F(SortTest, emptyNode_isSorted) {
+	EXPECT_EQ(true, s_dir_is_sorted(stack));
 }
 
 /*----------------------FT_LS----------------------------*/

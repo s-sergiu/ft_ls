@@ -21,9 +21,9 @@ void	list_dirs(void (*f)(void *))
 
 	dir_list = get_directory_list();
 	index = dir_list->head;
-	while (index->next_entry)
+	while (index)
 	{
-		f(index->file);
+		f(index);
 		index = index->next_entry;
 	}
 }
@@ -34,7 +34,9 @@ struct s_dir*	s_dir_new(const char *name)
 	new = (struct s_dir*)malloc(sizeof(struct s_dir));
 	if (!new || !name)
 		return (NULL);
-	ft_strlcat(new->file, name, ft_strlen(name - 1));
+	new->file[0] = 0;
+	new->head = NULL;
+	ft_strlcat(new->file, name, ft_strlen(name) + 1);
 	new->next_entry = NULL;
 	return (new);
 }
@@ -44,7 +46,7 @@ int	s_dir_pop(struct s_dir** dir_list)
 	if ((*dir_list)->size == 0)
 		return -1;
 	(*dir_list)->size--;
-	return -1;
+	return (1);
 }
 
 int	s_dir_push(struct s_dir** dir_list, const char *name) 
@@ -54,28 +56,51 @@ int	s_dir_push(struct s_dir** dir_list, const char *name)
 	if (!(*dir_list))
 		return (-1);
 	file = s_dir_new(name);
-	if ((*dir_list)->head == NULL)
-		file->next_entry = *dir_list;
-	else
+	if ((*dir_list)->head != NULL)
 		file->next_entry = (*dir_list)->head;
 	(*dir_list)->head= file;
 	(*dir_list)->size++;
-	return (0);
+	return (1);
+}
+
+int	s_dir_free_memory(struct s_dir* list)
+{
+	struct s_dir	*index;
+	struct s_dir	*temp;
+
+	if (list->head)
+		index = list->head;
+	while (index)
+	{
+		temp = index->next_entry;
+		free(index);
+		index = temp;
+	}
+	return (1);
+}
+
+int	s_dir_is_sorted(struct s_dir* list)
+{
+	struct s_dir*	index;
+	char*			str1;
+	char*			str2;
+	if (!list->head)
+		return (1);
+	index = list->head;
+	while (index)
+	{
+		str1 = index->file;
+		str2 = index->next_entry->file;
+		if (ft_strncmp(str1, str2, ft_strlen(str1)) < 0)
+			return (-1);
+		index = index->next_entry;
+	}
+	return (1);
 }
 
 void	s_dir_sort_alphabetically(struct s_dir* list)
 {
-	struct s_dir*	temp = NULL;
-	char*			str1;
-	char*			str2;
-	str1 = (list->head)->file;
-	str2 = (list->head)->next_entry->file;
-	ft_printf("address %p\n", temp);
-	temp = (struct s_dir*)malloc(sizeof(struct s_dir));
-
-	ft_printf("strncmp %d\n", ft_strncmp(str2, str1, ft_strlen(str1)));
-	ft_printf("address %s\n", (list->head)->next_entry->file);
-	ft_printf("address %p\n", temp);
+	(void)list;
 }
 
 void	add_file_to_list(struct dirent *entry)
@@ -124,8 +149,10 @@ void	execute(char **args)
 		return ;
 	if (*args[1])
 		scan_dir(stream);
+	closedir(stream);
 	list_dirs(print_item);
 	if (file_stats.st_rdev != 0)
 		ft_printf("\n");
+	s_dir_free_memory(list);
 	s_dir_sort_alphabetically(list);
 }
