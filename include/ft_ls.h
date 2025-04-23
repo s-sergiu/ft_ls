@@ -16,9 +16,10 @@ struct s_dir {
 	struct s_dir	*next_entry;
 };
 
-unsigned char	is_empty(struct s_dir *node);
+unsigned char	is_empty(struct s_dir*);
 struct s_dir*	get_directory_list(void);
-int				s_dir_push(struct s_dir**, const char *name);
+void			s_dir_sort_alphabetically(struct s_dir*);
+int				s_dir_push(struct s_dir**, const char*);
 int				s_dir_pop(struct s_dir**);
 struct s_dir*	s_dir_new(const char*);
 void			list_dirs(void (*f)(void*));
