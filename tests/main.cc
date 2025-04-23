@@ -28,7 +28,7 @@ class StackTest : public ::testing::Test {
 
 
 	void SetUp() override {
-		this->stack = get_directory_list();
+		stack = (struct s_dir*)malloc(sizeof(struct s_dir));
 	}
 
 	void TearDown() override {
@@ -92,26 +92,71 @@ TEST_F(StackTest, afterTwoPushThreePop_underflow) {
 
 /*----------------------SORT----------------------------*/
 
-class SortTest : public ::testing::Test {
-	protected:
-		struct s_dir	*stack;
 
-
-	void SetUp() override {
-		this->stack = get_directory_list();
-	}
-
-	void TearDown() override {
-	}
-};
-
-TEST_F(SortTest, emptyNode_isSorted) {
+TEST_F(StackTest, emptyNode_isSorted) {
 	EXPECT_EQ(true, s_dir_is_sorted(stack));
+}
+
+TEST_F(StackTest, nodeWithOne_isSorted) {
+	s_dir_push(&stack, "one");
+	EXPECT_EQ(true, s_dir_is_sorted(stack));
+}
+
+TEST_F(StackTest, nodeWithTwo_isSorted) {
+	s_dir_push(&stack, "one");
+	s_dir_push(&stack, "two");
+	EXPECT_EQ(true, s_dir_is_sorted(stack));
+}
+
+TEST_F(StackTest, nodeWithTwo_isNotSorted) {
+	s_dir_push(&stack, "two");
+	s_dir_push(&stack, "one");
+	EXPECT_EQ(false, s_dir_is_sorted(stack));
+}
+
+TEST_F(StackTest, nodeWithThree_isSorted) {
+	s_dir_push(&stack, "abc");
+	s_dir_push(&stack, "acb");
+	s_dir_push(&stack, "adb");
+	EXPECT_EQ(true, s_dir_is_sorted(stack));
+}
+
+TEST_F(StackTest, nodeWithThree_isNotSorted) {
+	s_dir_push(&stack, "abc");
+	s_dir_push(&stack, "adb");
+	s_dir_push(&stack, "acb");
+	EXPECT_EQ(false, s_dir_is_sorted(stack));
+}
+
+TEST_F(StackTest, nodeWithMoreThanThree_isSorted) {
+	s_dir_push(&stack, "abc");
+	s_dir_push(&stack, "acar");
+	s_dir_push(&stack, "adb");
+	s_dir_push(&stack, "bar");
+	s_dir_push(&stack, "baz");
+	s_dir_push(&stack, "boar");
+	s_dir_push(&stack, "car");
+	s_dir_push(&stack, "foo");
+	s_dir_push(&stack, "stoor");
+	EXPECT_EQ(true, s_dir_is_sorted(stack));
+}
+
+TEST_F(StackTest, nodeWithMoreThanThree_isNotSorted) {
+	s_dir_push(&stack, "abc");
+	s_dir_push(&stack, "adb");
+	s_dir_push(&stack, "bar");
+	s_dir_push(&stack, "car");
+	s_dir_push(&stack, "stoor");
+	s_dir_push(&stack, "foo");
+	s_dir_push(&stack, "baz");
+	s_dir_push(&stack, "acar");
+	s_dir_push(&stack, "boar");
+	EXPECT_EQ(false, s_dir_is_sorted(stack));
 }
 
 /*----------------------FT_LS----------------------------*/
 
-TEST(FT_LS, noArguments) {
+TEST(FT_LS, emptyDirectory_noArguments) {
 	system("mkdir emptyDir && cd emptyDir");
 	std::string original_command = exec("cd emptyDir && ls");
 	std::string my_command = exec("export PATH=$PATH:$PWD && cd emptyDir && ft_ls");

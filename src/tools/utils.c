@@ -87,12 +87,12 @@ int	s_dir_is_sorted(struct s_dir* list)
 	if (!list->head)
 		return (1);
 	index = list->head;
-	while (index)
+	while (index->next_entry)
 	{
 		str1 = index->file;
 		str2 = index->next_entry->file;
 		if (ft_strncmp(str1, str2, ft_strlen(str1)) < 0)
-			return (-1);
+			return (0);
 		index = index->next_entry;
 	}
 	return (1);
@@ -153,6 +153,6 @@ void	execute(char **args)
 	list_dirs(print_item);
 	if (file_stats.st_rdev != 0)
 		ft_printf("\n");
-	s_dir_free_memory(list);
 	s_dir_sort_alphabetically(list);
+	s_dir_free_memory(list);
 }
