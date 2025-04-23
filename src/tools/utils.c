@@ -7,7 +7,7 @@ unsigned char	is_empty(struct s_dir *node)
 }
 struct s_dir*	get_directory_list(void)
 {
-	static struct s_dir	directory;
+	static struct	s_dir	directory;
 
 	if (!directory.next_entry)
 		directory.size = 0;
@@ -49,9 +49,10 @@ int	s_dir_pop(struct s_dir** dir_list)
 
 int	s_dir_push(struct s_dir** dir_list, const char *name) 
 {
+	struct s_dir*	file;
+
 	if (!(*dir_list))
 		return (-1);
-	struct s_dir*	file;
 	file = s_dir_new(name);
 	if ((*dir_list)->head == NULL)
 		file->next_entry = *dir_list;
@@ -64,7 +65,6 @@ int	s_dir_push(struct s_dir** dir_list, const char *name)
 
 void	s_dir_sort_alphabetically(struct s_dir* list)
 {
-	(void)list;
 	struct s_dir*	temp = NULL;
 	char*			str1;
 	char*			str2;

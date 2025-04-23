@@ -5,7 +5,7 @@ extern "C" {
 	#include "ft_ls.h"
 }
 
-std::string exec(const std::string &command) {
+std::string	exec(const std::string &command) {
 	char		buffer[128];
 	std::string	result = "";
 

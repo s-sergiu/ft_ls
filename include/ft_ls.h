@@ -12,8 +12,8 @@
 struct s_dir {
 	char			file[128];
 	int				size;
-	struct s_dir	*head;
-	struct s_dir	*next_entry;
+	struct s_dir*	head;
+	struct s_dir*	next_entry;
 };
 
 unsigned char	is_empty(struct s_dir*);
