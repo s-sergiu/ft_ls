@@ -1,7 +1,7 @@
 
 #include "ft_ls.h"
 
-void	list_dirs(void (*f)(void *))
+void	s_dir_print_directory(void (*f)(void *))
 {
 	struct s_dir*	index;
 	struct s_dir*	dir_list;
@@ -15,7 +15,7 @@ void	list_dirs(void (*f)(void *))
 	}
 }
 
-void	add_file_to_list(struct dirent *entry)
+void	s_dir_add_file_to_head(struct dirent *entry)
 {
 	struct s_dir*	dir_list;
 
@@ -26,26 +26,28 @@ void	add_file_to_list(struct dirent *entry)
 		return ;
 }
 
-struct dirent*	scan_dir(DIR *stream)
+struct dirent*	scan_directory(DIR *stream)
 {
 	struct dirent*	entry;
 
 	entry = readdir(stream);
 	if (!entry)
 		return (NULL);
-	add_file_to_list(entry);
-	return 	(scan_dir(stream));
+	s_dir_add_file_to_head(entry);
+	return 	(scan_directory(stream));
 }
 
-void	print_item(void *item) 
+void	print_element(void *item) 
 {
-	struct stat		file_stats;
+	struct stat	file_stats;
+	char*		filename;
 
+	filename = ((struct s_dir*)item)->file;
 	stat(STDOUT, &file_stats);
 	if (file_stats.st_rdev != 0)
-		ft_printf("%s  ", item);
+		ft_printf("%s  ", filename);
 	else
-		ft_printf("%s\n", item);
+		ft_printf("%s\n", filename);
 }
 
 void	execute(char **args)
@@ -60,9 +62,9 @@ void	execute(char **args)
 	if (!stream)
 		return ;
 	if (*args[1])
-		scan_dir(stream);
+		scan_directory(stream);
 	closedir(stream);
-	list_dirs(print_item);
+	s_dir_print_directory(print_element);
 	if (file_stats.st_rdev != 0)
 		ft_printf("\n");
 	s_dir_sort_alphabetically(list);

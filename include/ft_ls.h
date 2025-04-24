@@ -11,24 +11,24 @@
 #define STDOUT "/dev/stdout"
 
 struct s_dir {
-	char			file[128];
-	int				size;
 	struct s_dir*	head;
 	struct s_dir*	next_entry;
+	int				size;
+	char			file[128];
 };
 
 int				s_dir_is_empty(struct s_dir*);
 struct s_dir*	s_dir_return_head(void);
+void			s_dir_add_file_to_head(struct dirent*);
 int				s_dir_free_memory(struct s_dir* list);
 int				s_dir_is_sorted(struct s_dir* list);
 int				s_dir_sort_alphabetically(struct s_dir*);
 int				s_dir_push(struct s_dir**, const char*);
 int				s_dir_pop(struct s_dir**);
 struct s_dir*	s_dir_new(const char*);
-void			list_dirs(void (*f)(void*));
+void			S_dir_print_directory(void (*f)(void*));
 void			execute(char**);
-struct dirent*	scan_dir(DIR*);
-void			add_file_to_list(struct dirent*);
-void			print_item(void*);
+struct dirent*	scan_directory(DIR*);
+void			print_element(void*);
 
 #endif
