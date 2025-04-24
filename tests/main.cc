@@ -26,22 +26,22 @@ class StackTest : public ::testing::Test {
 	protected:
 		struct s_dir	*stack;
 
-
 	void SetUp() override {
 		stack = (struct s_dir*)malloc(sizeof(struct s_dir));
 	}
 
 	void TearDown() override {
+		stack = NULL;
 	}
 };
 
 TEST_F(StackTest, newNode_isEmpty) {
-	EXPECT_EQ(true, is_empty(stack));
+	EXPECT_EQ(true, s_dir_is_empty(stack));
 }
 
 TEST_F(StackTest, afterOnePush_isNotEmpty) {
 	EXPECT_EQ(true, s_dir_push(&stack, "one"));
-	EXPECT_EQ(false, is_empty(stack));
+	EXPECT_EQ(false, s_dir_is_empty(stack));
 	EXPECT_EQ(1, stack->size);
 }
 
@@ -49,7 +49,7 @@ TEST_F(StackTest, afterOnePushOnePop_isEmpty) {
 	EXPECT_EQ(true, s_dir_push(&stack, "one"));
 	EXPECT_STREQ(stack->head->file, "one");
 	EXPECT_EQ(true, s_dir_pop(&stack));
-	EXPECT_EQ(true, is_empty(stack));
+	EXPECT_EQ(true, s_dir_is_empty(stack));
 	EXPECT_EQ(0, stack->size);
 }
 
@@ -64,7 +64,7 @@ TEST_F(StackTest, afterTwoPushOnePop_sizeOne) {
 	EXPECT_EQ(true, s_dir_push(&stack, "two"));
 	EXPECT_STREQ(stack->head->file, "two");
 	EXPECT_EQ(true, s_dir_pop(&stack));
-	EXPECT_EQ(false, is_empty(stack));
+	EXPECT_EQ(false, s_dir_is_empty(stack));
 	EXPECT_EQ(1, stack->size);
 }
 
@@ -75,7 +75,7 @@ TEST_F(StackTest, afterTwoPushTwoPop_sizeZero) {
 	EXPECT_STREQ(stack->head->file, "two");
 	EXPECT_EQ(true, s_dir_pop(&stack));
 	EXPECT_EQ(true, s_dir_pop(&stack));
-	EXPECT_EQ(true, is_empty(stack));
+	EXPECT_EQ(true, s_dir_is_empty(stack));
 	EXPECT_EQ(0, stack->size);
 }
 
@@ -152,6 +152,24 @@ TEST_F(StackTest, nodeWithMoreThanThree_isNotSorted) {
 	s_dir_push(&stack, "acar");
 	s_dir_push(&stack, "boar");
 	EXPECT_EQ(false, s_dir_is_sorted(stack));
+}
+
+TEST_F(StackTest, sortEmptyList) {
+	s_dir_sort_alphabetically(stack);
+	EXPECT_EQ(true, s_dir_is_sorted(stack));
+}
+
+TEST_F(StackTest, sortListWithOneElement) {
+	s_dir_push(&stack, "abc");
+	s_dir_sort_alphabetically(stack);
+	EXPECT_EQ(true, s_dir_is_sorted(stack));
+}
+
+TEST_F(StackTest, sortListWithTwoElements) {
+	s_dir_push(&stack, "cba");
+	s_dir_push(&stack, "abc");
+	s_dir_sort_alphabetically(stack);
+	EXPECT_EQ(true, s_dir_is_sorted(stack));
 }
 
 /*----------------------FT_LS----------------------------*/

@@ -17,11 +17,11 @@ struct s_dir {
 	struct s_dir*	next_entry;
 };
 
-unsigned char	is_empty(struct s_dir*);
-struct s_dir*	get_directory_list(void);
+int				s_dir_is_empty(struct s_dir*);
+struct s_dir*	s_dir_return_head(void);
 int				s_dir_free_memory(struct s_dir* list);
 int				s_dir_is_sorted(struct s_dir* list);
-void			s_dir_sort_alphabetically(struct s_dir*);
+int				s_dir_sort_alphabetically(struct s_dir*);
 int				s_dir_push(struct s_dir**, const char*);
 int				s_dir_pop(struct s_dir**);
 struct s_dir*	s_dir_new(const char*);
