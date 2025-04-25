@@ -1,5 +1,4 @@
 #include <gtest/gtest.h>
-#include <filesystem>
 
 extern "C" {
 	#include "ft_ls.h"
@@ -152,6 +151,50 @@ TEST_F(StackTest, nodeWithMoreThanThree_isNotSorted) {
 	s_dir_push(&stack, "acar");
 	s_dir_push(&stack, "boar");
 	EXPECT_EQ(false, s_dir_is_sorted(stack));
+}
+
+TEST_F(StackTest, listEmpty_copyIntoArray) {
+	char* array[1];
+	array[0] = NULL;
+	EXPECT_EQ(0, copy_dir_into_array(stack, array, 0));
+	EXPECT_STREQ(nullptr, array[0]);
+
+}
+
+TEST_F(StackTest, listSizeOne_copyIntoArray) {
+	char* array[1];
+	array[0] = NULL;
+	s_dir_push(&stack, "boar");
+	EXPECT_EQ(1, copy_dir_into_array(stack, array, 1));
+	EXPECT_STREQ("boar", array[0]);
+
+}
+
+TEST_F(StackTest, listSizeTwo_copyIntoArray) {
+	char* array[2];
+	array[0] = NULL;
+	array[1] = NULL;
+	s_dir_push(&stack, "boar");
+	s_dir_push(&stack, "cat");
+	EXPECT_EQ(2, copy_dir_into_array(stack, array, 2));
+	EXPECT_STREQ("boar", array[1]);
+	EXPECT_STREQ("cat", array[0]);
+
+}
+
+TEST_F(StackTest, listSizeThree_copyIntoArray) {
+	char* array[3];
+	array[0] = NULL;
+	array[1] = NULL;
+	array[2] = NULL;
+	s_dir_push(&stack, "tiger");
+	s_dir_push(&stack, "boar");
+	s_dir_push(&stack, "cat");
+	EXPECT_EQ(3, copy_dir_into_array(stack, array, 3));
+	EXPECT_STREQ("tiger", array[2]);
+	EXPECT_STREQ("boar", array[1]);
+	EXPECT_STREQ("cat", array[0]);
+
 }
 
 TEST_F(StackTest, sortEmptyList) {
