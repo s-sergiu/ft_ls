@@ -30,6 +30,8 @@ void			s_dir_print_list(struct s_dir *);
 struct s_dir*	s_dir_new(const char*);
 unsigned int	s_dir_get_size(struct s_dir*);
 void			s_dir_print_directory(void (*f)(void*));
+int				copy_dir_into_array(struct s_dir *, char(*)[128] ,int);
+int				copy_array_into_dir(char(*)[128] , int, struct s_dir **);
 int				is_output_a_tty();
 void			execute(char**);
 struct dirent*	scan_directory(DIR*);
