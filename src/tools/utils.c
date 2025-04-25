@@ -1,6 +1,16 @@
 
 #include "ft_ls.h"
 
+int	is_output_a_tty(void)
+{
+	struct stat	file_stats;
+
+	stat(STDOUT, &file_stats);
+	if (file_stats.st_rdev != 0)
+		return (1);
+	return (0);
+}
+
 void	s_dir_print_directory(void (*f)(void *))
 {
 	struct s_dir*	index;
@@ -39,12 +49,10 @@ struct dirent*	scan_directory(DIR *stream)
 
 void	print_element(void *item) 
 {
-	struct stat	file_stats;
 	char*		filename;
 
 	filename = ((struct s_dir*)item)->file;
-	stat(STDOUT, &file_stats);
-	if (file_stats.st_rdev != 0)
+	if (is_output_a_tty())
 		ft_printf("%s  ", filename);
 	else
 		ft_printf("%s\n", filename);
@@ -53,11 +61,9 @@ void	print_element(void *item)
 void	execute(char **args)
 {
 	DIR*			stream;
-	struct stat		file_stats;
 	struct s_dir*	list;
 
 	list = s_dir_return_head();
-	stat(STDOUT, &file_stats);
 	stream = opendir(args[1]);
 	if (!stream)
 		return ;
@@ -65,7 +71,7 @@ void	execute(char **args)
 		scan_directory(stream);
 	closedir(stream);
 	s_dir_print_directory(print_element);
-	if (file_stats.st_rdev != 0)
+	if (is_output_a_tty())
 		ft_printf("\n");
 	s_dir_sort_alphabetically(list);
 	s_dir_free_memory(list);

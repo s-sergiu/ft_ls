@@ -51,6 +51,22 @@ int	s_dir_push(struct s_dir** dir_list, const char *name)
 	return (1);
 }
 
+unsigned int	s_dir_get_size(struct s_dir* dir)
+{
+	int				i;
+
+	i = 0;
+	if(!dir->head)
+		return (0);
+	dir = dir->head;
+	while (dir)
+	{
+		i++;
+		dir = dir->next_entry;
+	}
+	return (i);
+}
+
 int	s_dir_free_memory(struct s_dir* list)
 {
 	struct s_dir	*index;
@@ -86,9 +102,63 @@ int	s_dir_is_sorted(struct s_dir* list)
 	}
 	return (1);
 }
+int	copy_dir_into_array(struct s_dir *list, char** array, int size)
+{
+	int		i;
+
+	i = 0;
+	list = list->head;
+	while (list && i < size)
+	{
+		array[i] = list->file;
+		list = list->next_entry;
+		i++;
+	}
+	return (i);
+}
+
+void	s_dir_print_list(struct s_dir *list)
+{
+	struct s_dir*	index;
+	int				i;
+
+	i = 0;
+	index = list->head;
+	while(index)
+	{
+		ft_printf("file[%d]: %s\n", i, index->file);
+		i++;
+		index = index->next_entry;
+	}
+}
+
+int	copy_array_into_dir(char **array, int size, struct s_dir **list)
+{
+	int				i;
+	struct s_dir*	index;
+
+	i = size - 2;
+	if (!(*list)->head)
+		return (0);
+	index = (*list)->head;
+	while (index && i < size)
+	{
+		ft_strlcat(index->file, array[i], ft_strlen(array[i]) + 1);
+		i--;
+		index = index->next_entry;
+	}
+	return (i);
+}
 
 int	s_dir_sort_alphabetically(struct s_dir* list)
 {
+	int		size;
+	size = s_dir_get_size(list) + 1;
+	//char*	array[size];
+	//copy_dir_into_array(list, array, size);
+	//copy_array_into_dir(array, size, &list);
+	if (size < 2)
+		return (1);
 	(void)list;
-	return 1;
+	return (size);
 }
