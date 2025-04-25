@@ -20,7 +20,7 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
-add_library(ls STATIC src/tools/utils.c include/ft_ls.h)
+add_library(ls STATIC src/tools/utils.c src/tools/s_dir.c include/ft_ls.h)
 add_library(ft STATIC libs/Libft/src/ft_printf.c libs/Libft/src/ft_strlcat.c
 			libs/Libft/src/ft_strlen.c libs/Libft/src/ft_putchar_fd.c
 			libs/Libft/src/ft_strncmp.c libs/Libft/src/printf_utils.c
