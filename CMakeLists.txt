@@ -26,7 +26,8 @@ add_library(ft STATIC libs/Libft/src/ft_printf.c libs/Libft/src/ft_strlcat.c
 			libs/Libft/src/ft_strncmp.c libs/Libft/src/printf_utils.c
 			libs/Libft/src/check_utils.c libs/Libft/src/ft_itoa.c
 			libs/Libft/src/ft_putnbr_fd.c libs/Libft/src/ft_putstr_fd.c
-			libs/Libft/src/ft_itoa_unsigned.c libs/Libft/include/libft.h)
+			libs/Libft/src/ft_itoa_unsigned.c libs/Libft/src/ft_strlcpy.c
+			libs/Libft/include/libft.h)
 
 add_executable(
   hello_test
