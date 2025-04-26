@@ -1,7 +1,7 @@
 
 #include "ft_ls.h"
 
-int	is_output_a_tty(void)
+int	is_output_a_terminal(void)
 {
 	struct stat	file_stats;
 
@@ -52,7 +52,7 @@ void	print_element(void *item)
 	char*		filename;
 
 	filename = ((struct s_dir*)item)->file;
-	if (is_output_a_tty())
+	if (is_output_a_terminal())
 		ft_printf("%s  ", filename);
 	else
 		ft_printf("%s\n", filename);
@@ -71,7 +71,7 @@ void	execute(char **args)
 		scan_directory(stream);
 	closedir(stream);
 	s_dir_print_directory(print_element);
-	if (is_output_a_tty())
+	if (is_output_a_terminal())
 		ft_printf("\n");
 	s_dir_sort_alphabetically(list);
 	s_dir_free_memory(list);

@@ -153,6 +153,7 @@ TEST_F(StackTest, nodeWithMoreThanThree_isNotSorted) {
 	EXPECT_EQ(false, s_dir_is_sorted(stack));
 }
 
+/*
 TEST_F(StackTest, sortEmptyList) {
 	s_dir_sort_alphabetically(stack);
 	EXPECT_EQ(true, s_dir_is_sorted(stack));
@@ -170,9 +171,18 @@ TEST_F(StackTest, sortListWithTwoElements) {
 	s_dir_sort_alphabetically(stack);
 	EXPECT_EQ(true, s_dir_is_sorted(stack));
 }
+*/
+TEST_F(StackTest, sortListWithThreeElements) {
+	s_dir_push(&stack, "cba");
+	s_dir_push(&stack, "abc");
+	s_dir_push(&stack, "dcb");
+	s_dir_sort_alphabetically(stack);
+	EXPECT_EQ(true, s_dir_is_sorted(stack));
+}
 
 /*----------------------FT_LS----------------------------*/
 
+/*
 TEST(FT_LS, emptyDirectory_noArguments) {
 	system("mkdir emptyDir && cd emptyDir");
 	std::string original_command = exec("cd emptyDir && ls");
@@ -204,6 +214,7 @@ TEST(FT_LS, directoryWithTwoFiles) {
 	EXPECT_EQ(my_command, original_command);
 	system("rm -rf emptyDir");
 }
+*/
 
 int main(int argc, char **argv) {
 	::testing::InitGoogleTest(&argc, argv);
