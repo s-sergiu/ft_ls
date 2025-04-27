@@ -40,60 +40,61 @@ TEST_F(StackTest, emptyList_isEmpty) {
 
 TEST_F(StackTest, afterOnePush_isNotEmpty) {
 	EXPECT_EQ(true, s_dir_push(&dir, "one"));
-	t_file* file = dir->files;
-	EXPECT_STREQ(file->name, "one");
+	EXPECT_STREQ(dir->files->name, "one");
 	EXPECT_EQ(false, s_dir_is_empty(dir));
 	EXPECT_EQ(1, dir->size);
 }
 
 TEST_F(StackTest, afterOnePushOnePop_isEmpty) {
 	EXPECT_EQ(true, s_dir_push(&dir, "one"));
-	t_file* file = dir->files;
-	EXPECT_STREQ(file->name, "one");
+	EXPECT_STREQ(dir->files->name, "one");
 	EXPECT_EQ(true, s_dir_pop(&dir));
+	EXPECT_EQ(NULL, dir->files);
 	EXPECT_EQ(true, s_dir_is_empty(dir));
 	EXPECT_EQ(0, dir->size);
 }
 
 TEST_F(StackTest, newStackPop_isEmpty_underflow) {
+	t_dir*	empty_dir = NULL;
+	EXPECT_EQ(-1, s_dir_pop(NULL));
+	EXPECT_EQ(-1, s_dir_pop(&empty_dir));
 	EXPECT_EQ(-1, s_dir_pop(&dir));
 	EXPECT_EQ(0, dir->size);
 }
 
 TEST_F(StackTest, afterTwoPushOnePop_sizeOne) {
 	EXPECT_EQ(true, s_dir_push(&dir, "one"));
-	t_file* file = dir->files;
-	EXPECT_STREQ(file->name, "one");
+	EXPECT_STREQ(dir->files->name, "one");
 	EXPECT_EQ(true, s_dir_push(&dir, "two"));
-	file = dir->files;
-	EXPECT_STREQ(file->name, "two");
+	EXPECT_STREQ(dir->files->name, "two");
 	EXPECT_EQ(true, s_dir_pop(&dir));
+	EXPECT_STREQ(dir->files->name, "one");
 	EXPECT_EQ(false, s_dir_is_empty(dir));
 	EXPECT_EQ(1, dir->size);
 }
 
 TEST_F(StackTest, afterTwoPushTwoPop_sizeZero) {
 	EXPECT_EQ(true, s_dir_push(&dir, "one"));
-	t_file* file = dir->files;
-	EXPECT_STREQ(file->name, "one");
+	EXPECT_STREQ(dir->files->name, "one");
 	EXPECT_EQ(true, s_dir_push(&dir, "two"));
-	file = dir->files;
-	EXPECT_STREQ(file->name, "two");
+	EXPECT_STREQ(dir->files->name, "two");
 	EXPECT_EQ(true, s_dir_pop(&dir));
+	EXPECT_STREQ(dir->files->name, "one");
 	EXPECT_EQ(true, s_dir_pop(&dir));
+	EXPECT_EQ(NULL, dir->files);
 	EXPECT_EQ(true, s_dir_is_empty(dir));
 	EXPECT_EQ(0, dir->size);
 }
 
 TEST_F(StackTest, afterTwoPushThreePop_underflow) {
 	EXPECT_EQ(true, s_dir_push(&dir, "one"));
-	t_file* file = dir->files;
-	EXPECT_STREQ(file->name, "one");
+	EXPECT_STREQ(dir->files->name, "one");
 	EXPECT_EQ(true, s_dir_push(&dir, "two"));
-	file = dir->files;
-	EXPECT_STREQ(file->name, "two");
+	EXPECT_STREQ(dir->files->name, "two");
 	EXPECT_EQ(true, s_dir_pop(&dir));
+	EXPECT_STREQ(dir->files->name, "one");
 	EXPECT_EQ(true, s_dir_pop(&dir));
+	EXPECT_EQ(NULL, dir->files);
 	EXPECT_EQ(-1, s_dir_pop(&dir));
 	EXPECT_EQ(0, dir->size);
 }
