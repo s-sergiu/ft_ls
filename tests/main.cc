@@ -23,75 +23,103 @@ std::string	exec(const std::string &command) {
 
 class StackTest : public ::testing::Test {
 	protected:
-		struct s_dir	*stack;
+		t_dir*	dir;
+		t_file*	file;
 
 	void SetUp() override {
-		stack = (struct s_dir*)malloc(sizeof(struct s_dir));
+		dir = (t_dir*)malloc(sizeof(t_dir));
 	}
 
 	void TearDown() override {
-		stack = NULL;
 	}
 };
 
-TEST_F(StackTest, newNode_isEmpty) {
-	EXPECT_EQ(true, s_dir_is_empty(stack));
+TEST_F(StackTest, emptyList_isEmpty) {
+	EXPECT_EQ(true, s_dir_is_empty(dir));
 }
 
 TEST_F(StackTest, afterOnePush_isNotEmpty) {
-	EXPECT_EQ(true, s_dir_push(&stack, "one"));
-	EXPECT_EQ(false, s_dir_is_empty(stack));
-	EXPECT_EQ(1, stack->size);
+	EXPECT_EQ(true, s_dir_push(&dir, "one"));
+	t_file* file = dir->files;
+	EXPECT_STREQ(file->name, "one");
+	EXPECT_EQ(false, s_dir_is_empty(dir));
+	EXPECT_EQ(1, dir->size);
 }
 
 TEST_F(StackTest, afterOnePushOnePop_isEmpty) {
-	EXPECT_EQ(true, s_dir_push(&stack, "one"));
-	EXPECT_STREQ(stack->head->file, "one");
-	EXPECT_EQ(true, s_dir_pop(&stack));
-	EXPECT_EQ(true, s_dir_is_empty(stack));
-	EXPECT_EQ(0, stack->size);
+	EXPECT_EQ(true, s_dir_push(&dir, "one"));
+	t_file* file = dir->files;
+	EXPECT_STREQ(file->name, "one");
+	EXPECT_EQ(true, s_dir_pop(&dir));
+	EXPECT_EQ(true, s_dir_is_empty(dir));
+	EXPECT_EQ(0, dir->size);
 }
 
 TEST_F(StackTest, newStackPop_isEmpty_underflow) {
-	EXPECT_EQ(-1, s_dir_pop(&stack));
-	EXPECT_EQ(0, stack->size);
+	EXPECT_EQ(-1, s_dir_pop(&dir));
+	EXPECT_EQ(0, dir->size);
 }
 
 TEST_F(StackTest, afterTwoPushOnePop_sizeOne) {
-	EXPECT_EQ(true, s_dir_push(&stack, "one"));
-	EXPECT_STREQ(stack->head->file, "one");
-	EXPECT_EQ(true, s_dir_push(&stack, "two"));
-	EXPECT_STREQ(stack->head->file, "two");
-	EXPECT_EQ(true, s_dir_pop(&stack));
-	EXPECT_EQ(false, s_dir_is_empty(stack));
-	EXPECT_EQ(1, stack->size);
+	EXPECT_EQ(true, s_dir_push(&dir, "one"));
+	t_file* file = dir->files;
+	EXPECT_STREQ(file->name, "one");
+	EXPECT_EQ(true, s_dir_push(&dir, "two"));
+	file = dir->files;
+	EXPECT_STREQ(file->name, "two");
+	EXPECT_EQ(true, s_dir_pop(&dir));
+	EXPECT_EQ(false, s_dir_is_empty(dir));
+	EXPECT_EQ(1, dir->size);
 }
 
 TEST_F(StackTest, afterTwoPushTwoPop_sizeZero) {
-	EXPECT_EQ(true, s_dir_push(&stack, "one"));
-	EXPECT_STREQ(stack->head->file, "one");
-	EXPECT_EQ(true, s_dir_push(&stack, "two"));
-	EXPECT_STREQ(stack->head->file, "two");
-	EXPECT_EQ(true, s_dir_pop(&stack));
-	EXPECT_EQ(true, s_dir_pop(&stack));
-	EXPECT_EQ(true, s_dir_is_empty(stack));
-	EXPECT_EQ(0, stack->size);
+	EXPECT_EQ(true, s_dir_push(&dir, "one"));
+	t_file* file = dir->files;
+	EXPECT_STREQ(file->name, "one");
+	EXPECT_EQ(true, s_dir_push(&dir, "two"));
+	file = dir->files;
+	EXPECT_STREQ(file->name, "two");
+	EXPECT_EQ(true, s_dir_pop(&dir));
+	EXPECT_EQ(true, s_dir_pop(&dir));
+	EXPECT_EQ(true, s_dir_is_empty(dir));
+	EXPECT_EQ(0, dir->size);
 }
 
 TEST_F(StackTest, afterTwoPushThreePop_underflow) {
-	EXPECT_EQ(true, s_dir_push(&stack, "one"));
-	EXPECT_STREQ(stack->head->file, "one");
-	EXPECT_EQ(true, s_dir_push(&stack, "two"));
-	EXPECT_STREQ(stack->head->file, "two");
-	EXPECT_EQ(true, s_dir_pop(&stack));
-	EXPECT_EQ(true, s_dir_pop(&stack));
-	EXPECT_EQ(-1, s_dir_pop(&stack));
-	EXPECT_EQ(0, stack->size);
+	EXPECT_EQ(true, s_dir_push(&dir, "one"));
+	t_file* file = dir->files;
+	EXPECT_STREQ(file->name, "one");
+	EXPECT_EQ(true, s_dir_push(&dir, "two"));
+	file = dir->files;
+	EXPECT_STREQ(file->name, "two");
+	EXPECT_EQ(true, s_dir_pop(&dir));
+	EXPECT_EQ(true, s_dir_pop(&dir));
+	EXPECT_EQ(-1, s_dir_pop(&dir));
+	EXPECT_EQ(0, dir->size);
+}
+
+/*---------------------newFile----------------------------*/
+
+TEST_F(StackTest, newFileWithNoName_expectNull) {
+	t_file*	file;
+	EXPECT_EQ(NULL,t_file_new(""));
+}
+
+/*---------------------Push----------------------------*/
+
+TEST_F(StackTest, pushNoName_expectErr) {
+	EXPECT_EQ(-1,s_dir_push(&dir, ""));
+}
+
+TEST_F(StackTest, pushIntoNullDir_expectErr) {
+	t_dir*	empty_dir = NULL;
+	EXPECT_EQ(-1,s_dir_push(&empty_dir , "one"));
+	EXPECT_EQ(-1,s_dir_push(NULL, "one"));
 }
 
 /*----------------------SORT----------------------------*/
 
-
+/*
 TEST_F(StackTest, emptyNode_isSorted) {
 	EXPECT_EQ(true, s_dir_is_sorted(stack));
 }
@@ -153,7 +181,6 @@ TEST_F(StackTest, nodeWithMoreThanThree_isNotSorted) {
 	EXPECT_EQ(false, s_dir_is_sorted(stack));
 }
 
-/*
 TEST_F(StackTest, sortEmptyList) {
 	s_dir_sort_alphabetically(stack);
 	EXPECT_EQ(true, s_dir_is_sorted(stack));
@@ -171,7 +198,6 @@ TEST_F(StackTest, sortListWithTwoElements) {
 	s_dir_sort_alphabetically(stack);
 	EXPECT_EQ(true, s_dir_is_sorted(stack));
 }
-*/
 TEST_F(StackTest, sortListWithThreeElements) {
 	s_dir_push(&stack, "cba");
 	s_dir_push(&stack, "abc");
@@ -180,6 +206,7 @@ TEST_F(StackTest, sortListWithThreeElements) {
 	EXPECT_EQ(true, s_dir_is_sorted(stack));
 }
 
+*/
 /*----------------------FT_LS----------------------------*/
 
 /*

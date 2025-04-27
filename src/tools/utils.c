@@ -1,6 +1,45 @@
 
 #include "ft_ls.h"
 
+void	s_dir_print_directory(t_dir* dir, void (*f)(void *))
+{
+	t_file*	index;
+
+	index = dir->files;
+	while (index)
+	{
+		f(index);
+		index = index->next_entry;
+	}
+}
+
+void	s_dir_add_file_to_head(t_dir** dir, struct dirent* entry)
+{
+	if (entry->d_name[0] == '.')
+		return ;
+	if (s_dir_push(dir, entry->d_name) < 0)
+		return ;
+}
+
+t_dir*	scan_directory(DIR *stream)
+{
+	struct dirent*	entry;
+	t_dir*			dir;
+
+	dir = (t_dir*)malloc(sizeof(t_dir));
+	dir->files = NULL;
+	dir->size = 0;
+	entry = readdir(stream);
+	if (!entry)
+		return (NULL);
+	while (entry)
+	{
+		s_dir_add_file_to_head(&dir, entry);
+		entry = readdir(stream);
+	}
+	return (dir);
+}
+
 int	is_output_a_terminal(void)
 {
 	struct stat	file_stats;
@@ -11,47 +50,11 @@ int	is_output_a_terminal(void)
 	return (0);
 }
 
-void	s_dir_print_directory(void (*f)(void *))
-{
-	struct s_dir*	index;
-	struct s_dir*	dir_list;
-
-	dir_list = s_dir_return_head();
-	index = dir_list->head;
-	while (index)
-	{
-		f(index);
-		index = index->next_entry;
-	}
-}
-
-void	s_dir_add_file_to_head(struct dirent *entry)
-{
-	struct s_dir*	dir_list;
-
-	dir_list = s_dir_return_head();
-	if (entry->d_name[0] == '.')
-		return ;
-	if (s_dir_push(&dir_list, entry->d_name) < 0)
-		return ;
-}
-
-struct dirent*	scan_directory(DIR *stream)
-{
-	struct dirent*	entry;
-
-	entry = readdir(stream);
-	if (!entry)
-		return (NULL);
-	s_dir_add_file_to_head(entry);
-	return 	(scan_directory(stream));
-}
-
 void	print_element(void *item) 
 {
 	char*		filename;
 
-	filename = ((struct s_dir*)item)->file;
+	filename = ((t_file*)item)->name;
 	if (is_output_a_terminal())
 		ft_printf("%s  ", filename);
 	else
@@ -60,19 +63,19 @@ void	print_element(void *item)
 
 void	execute(char **args)
 {
-	DIR*			stream;
-	struct s_dir*	list;
+	DIR*	stream;
+	t_dir*	dir;
 
-	list = s_dir_return_head();
 	stream = opendir(args[1]);
+	(void)dir;
 	if (!stream)
 		return ;
 	if (*args[1])
-		scan_directory(stream);
+		dir = scan_directory(stream);
 	closedir(stream);
-	s_dir_print_directory(print_element);
+	s_dir_print_directory(dir, print_element);
 	if (is_output_a_terminal())
 		ft_printf("\n");
-	s_dir_sort_alphabetically(list);
-	s_dir_free_memory(list);
+	t_dir_free_memory(dir);
+	free(dir);
 }
