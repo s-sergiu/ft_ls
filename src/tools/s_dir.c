@@ -7,10 +7,10 @@ int	s_dir_is_sorted(t_dir* dir)
 	char*	str1;
 	char*	str2;
 
-	if (!dir)
+	if (!dir || !dir->files)
 		return (1);
 	index = dir->files;
-	while (index)
+	while (index->next_entry)
 	{
 		str1 = index->name;
 		str2 = index->next_entry->name;

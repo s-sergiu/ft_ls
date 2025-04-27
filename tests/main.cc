@@ -120,97 +120,69 @@ TEST_F(StackTest, pushIntoNullDir_expectErr) {
 
 /*----------------------SORT----------------------------*/
 
-/*
 TEST_F(StackTest, emptyNode_isSorted) {
-	EXPECT_EQ(true, s_dir_is_sorted(stack));
+	EXPECT_EQ(true, s_dir_is_sorted(dir));
 }
 
 TEST_F(StackTest, nodeWithOne_isSorted) {
-	s_dir_push(&stack, "one");
-	EXPECT_EQ(true, s_dir_is_sorted(stack));
+	s_dir_push(&dir, "one");
+	EXPECT_EQ(true, s_dir_is_sorted(dir));
 }
 
 TEST_F(StackTest, nodeWithTwo_isSorted) {
-	s_dir_push(&stack, "one");
-	s_dir_push(&stack, "two");
-	EXPECT_EQ(true, s_dir_is_sorted(stack));
+	s_dir_push(&dir, "one");
+	s_dir_push(&dir, "two");
+	EXPECT_EQ(true, s_dir_is_sorted(dir));
 }
 
 TEST_F(StackTest, nodeWithTwo_isNotSorted) {
-	s_dir_push(&stack, "two");
-	s_dir_push(&stack, "one");
-	EXPECT_EQ(false, s_dir_is_sorted(stack));
+	s_dir_push(&dir, "two");
+	s_dir_push(&dir, "one");
+	EXPECT_EQ(false, s_dir_is_sorted(dir));
 }
 
 TEST_F(StackTest, nodeWithThree_isSorted) {
-	s_dir_push(&stack, "abc");
-	s_dir_push(&stack, "acb");
-	s_dir_push(&stack, "adb");
-	EXPECT_EQ(true, s_dir_is_sorted(stack));
+	s_dir_push(&dir, "abc");
+	s_dir_push(&dir, "acb");
+	s_dir_push(&dir, "adb");
+	EXPECT_EQ(true, s_dir_is_sorted(dir));
 }
 
 TEST_F(StackTest, nodeWithThree_isNotSorted) {
-	s_dir_push(&stack, "abc");
-	s_dir_push(&stack, "adb");
-	s_dir_push(&stack, "acb");
-	EXPECT_EQ(false, s_dir_is_sorted(stack));
+	s_dir_push(&dir, "abc");
+	s_dir_push(&dir, "adb");
+	s_dir_push(&dir, "acb");
+	EXPECT_EQ(false, s_dir_is_sorted(dir));
 }
 
 TEST_F(StackTest, nodeWithMoreThanThree_isSorted) {
-	s_dir_push(&stack, "abc");
-	s_dir_push(&stack, "acar");
-	s_dir_push(&stack, "adb");
-	s_dir_push(&stack, "bar");
-	s_dir_push(&stack, "baz");
-	s_dir_push(&stack, "boar");
-	s_dir_push(&stack, "car");
-	s_dir_push(&stack, "foo");
-	s_dir_push(&stack, "stoor");
-	EXPECT_EQ(true, s_dir_is_sorted(stack));
+	s_dir_push(&dir, "abc");
+	s_dir_push(&dir, "acar");
+	s_dir_push(&dir, "adb");
+	s_dir_push(&dir, "bar");
+	s_dir_push(&dir, "baz");
+	s_dir_push(&dir, "boar");
+	s_dir_push(&dir, "car");
+	s_dir_push(&dir, "foo");
+	s_dir_push(&dir, "stoor");
+	EXPECT_EQ(true, s_dir_is_sorted(dir));
 }
 
 TEST_F(StackTest, nodeWithMoreThanThree_isNotSorted) {
-	s_dir_push(&stack, "abc");
-	s_dir_push(&stack, "adb");
-	s_dir_push(&stack, "bar");
-	s_dir_push(&stack, "car");
-	s_dir_push(&stack, "stoor");
-	s_dir_push(&stack, "foo");
-	s_dir_push(&stack, "baz");
-	s_dir_push(&stack, "acar");
-	s_dir_push(&stack, "boar");
-	EXPECT_EQ(false, s_dir_is_sorted(stack));
+	s_dir_push(&dir, "abc");
+	s_dir_push(&dir, "adb");
+	s_dir_push(&dir, "bar");
+	s_dir_push(&dir, "car");
+	s_dir_push(&dir, "stoor");
+	s_dir_push(&dir, "foo");
+	s_dir_push(&dir, "baz");
+	s_dir_push(&dir, "acar");
+	s_dir_push(&dir, "boar");
+	EXPECT_EQ(false, s_dir_is_sorted(dir));
 }
 
-TEST_F(StackTest, sortEmptyList) {
-	s_dir_sort_alphabetically(stack);
-	EXPECT_EQ(true, s_dir_is_sorted(stack));
-}
-
-TEST_F(StackTest, sortListWithOneElement) {
-	s_dir_push(&stack, "abc");
-	s_dir_sort_alphabetically(stack);
-	EXPECT_EQ(true, s_dir_is_sorted(stack));
-}
-
-TEST_F(StackTest, sortListWithTwoElements) {
-	s_dir_push(&stack, "cba");
-	s_dir_push(&stack, "abc");
-	s_dir_sort_alphabetically(stack);
-	EXPECT_EQ(true, s_dir_is_sorted(stack));
-}
-TEST_F(StackTest, sortListWithThreeElements) {
-	s_dir_push(&stack, "cba");
-	s_dir_push(&stack, "abc");
-	s_dir_push(&stack, "dcb");
-	s_dir_sort_alphabetically(stack);
-	EXPECT_EQ(true, s_dir_is_sorted(stack));
-}
-
-*/
 /*----------------------FT_LS----------------------------*/
 
-/*
 TEST(FT_LS, emptyDirectory_noArguments) {
 	system("mkdir emptyDir && cd emptyDir");
 	std::string original_command = exec("cd emptyDir && ls");
@@ -242,7 +214,6 @@ TEST(FT_LS, directoryWithTwoFiles) {
 	EXPECT_EQ(my_command, original_command);
 	system("rm -rf emptyDir");
 }
-*/
 
 int main(int argc, char **argv) {
 	::testing::InitGoogleTest(&argc, argv);
