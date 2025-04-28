@@ -1,26 +1,26 @@
 
 #include "ft_ls.h"
 
-int	count_files_inside_dir(DIR *stream)
+int	get_number_of_files(char *args)
 {
-	struct dirent*	entry;
+	DIR*			stream;
 	int				i;
 	
 	i = 0;
-	entry = readdir(stream);
-	if (!entry)
+	stream = opendir(args);
+	if (!stream)
 		return (-1);
-	while (entry)
-	{
-		entry = readdir(stream);
+	while (readdir(stream))
 		i++;
-	}
+	closedir(stream);
+
 	return (i);
 }
 
 void	add_file_to_array(char arr[][NAME_MAXLEN], struct dirent* entry, int i)
 {
 	size_t	str_size;
+
 	str_size = ft_strlen(entry->d_name);
 	ft_strlcpy(&arr[i][2], entry->d_name, str_size + 1);
 	arr[i][STRLEN] = str_size;
@@ -31,22 +31,22 @@ void	add_file_to_array(char arr[][NAME_MAXLEN], struct dirent* entry, int i)
 		arr[i][FLAGS] |= FLAG_VISIBLE;
 }
 
-void	scan_directory(char arr[][NAME_MAXLEN], DIR *stream)
+void	scan_directory(char arr[][NAME_MAXLEN], char *arg)
 {
 	struct dirent*	entry;
+	DIR*			stream;
 	int				i;
 
-	entry = readdir(stream);
-	if (!entry)
-		return ;
 	i = 0;
+	stream = opendir(arg);
+	entry = readdir(stream);
 	while (entry)
 	{
 		add_file_to_array(arr, entry, i);
 		entry = readdir(stream);
 		i++;
 	}
-	arr[i][0] = 0;
+	closedir(stream);
 }
 
 int	is_output_a_terminal(void)
@@ -80,22 +80,15 @@ void	output_directory(char arr[][NAME_MAXLEN])
 	}
 }
 
-void	execute(char **args)
+void	execute(char **argv)
 {
-	DIR*	stream;
-	int		dir_size;
 	char	(*arr)[NAME_MAXLEN];
+	int		size;
 
-	stream = opendir(args[1]);
-	dir_size = count_files_inside_dir(stream);
-	closedir(stream);
-	arr = malloc(dir_size * sizeof *arr);
-	stream = opendir(args[1]);
-	if (*args[1])
-		scan_directory(arr, stream);
-	closedir(stream);
+	size = get_number_of_files(argv[1]);
+	arr = malloc(size * sizeof *arr);
+	scan_directory(arr, argv[1]);
 	output_directory(arr);
-	//print_debug_info();
 	if (is_output_a_terminal())
 		write(1, "\n", 1);
 }

@@ -18,7 +18,7 @@
 
 int				is_output_a_terminal();
 void			execute(char**);
-void			scan_directory(char[][NAME_MAXLEN], DIR*);
+void			scan_directory(char[][NAME_MAXLEN], char *arg);
 void			print_debug_info(void);
 
 #endif
