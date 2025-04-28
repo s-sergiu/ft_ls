@@ -1,43 +1,52 @@
 
 #include "ft_ls.h"
 
-void	s_dir_print_directory(t_dir* dir, void (*f)(void *))
-{
-	t_file*	index;
-
-	index = dir->files;
-	while (index)
-	{
-		f(index);
-		index = index->next_entry;
-	}
-}
-
-void	s_dir_add_file_to_head(t_dir** dir, struct dirent* entry)
-{
-	if (entry->d_name[0] == '.')
-		return ;
-	if (s_dir_push(dir, entry->d_name) < 0)
-		return ;
-}
-
-t_dir*	scan_directory(DIR *stream)
+int	count_files_inside_dir(DIR *stream)
 {
 	struct dirent*	entry;
-	t_dir*			dir;
-
-	dir = (t_dir*)malloc(sizeof(t_dir));
-	dir->files = NULL;
-	dir->size = 0;
+	int				i;
+	
+	i = 0;
 	entry = readdir(stream);
 	if (!entry)
-		return (NULL);
+		return (-1);
 	while (entry)
 	{
-		s_dir_add_file_to_head(&dir, entry);
 		entry = readdir(stream);
+		i++;
 	}
-	return (dir);
+	return (i);
+}
+
+void	add_file_to_array(char arr[][NAME_MAXLEN], struct dirent* entry, int i)
+{
+	size_t	str_size;
+	str_size = ft_strlen(entry->d_name);
+	ft_strlcpy(&arr[i][2], entry->d_name, str_size + 1);
+	arr[i][STRLEN] = str_size;
+	arr[i][FLAGS] = 0;
+	if (entry->d_name[0] == '.')
+		arr[i][FLAGS] |= FLAG_HIDDEN;
+	else
+		arr[i][FLAGS] |= FLAG_VISIBLE;
+}
+
+void	scan_directory(char arr[][NAME_MAXLEN], DIR *stream)
+{
+	struct dirent*	entry;
+	int				i;
+
+	entry = readdir(stream);
+	if (!entry)
+		return ;
+	i = 0;
+	while (entry)
+	{
+		add_file_to_array(arr, entry, i);
+		entry = readdir(stream);
+		i++;
+	}
+	arr[i][0] = 0;
 }
 
 int	is_output_a_terminal(void)
@@ -50,32 +59,43 @@ int	is_output_a_terminal(void)
 	return (0);
 }
 
-void	print_element(void *item) 
+void	output_directory(char arr[][NAME_MAXLEN])
 {
-	char*		filename;
-
-	filename = ((t_file*)item)->name;
-	if (is_output_a_terminal())
-		ft_printf("%s  ", filename);
-	else
-		ft_printf("%s\n", filename);
+	int i;
+	int is_tty;
+	
+	i = 0;
+	is_tty = is_output_a_terminal();
+	while(arr[i][STRLEN])
+	{
+		if (arr[i][FLAGS] & FLAG_VISIBLE)
+		{
+			write(1, &arr[i][2], arr[i][STRLEN]);
+			if (is_tty)
+				write(1, "  ", 2); 
+			else
+				write(1, "\n", 1); 
+		}
+		i++;
+	}
 }
 
 void	execute(char **args)
 {
 	DIR*	stream;
-	t_dir*	dir;
+	int		dir_size;
+	char	(*arr)[NAME_MAXLEN];
 
 	stream = opendir(args[1]);
-	(void)dir;
-	if (!stream)
-		return ;
-	if (*args[1])
-		dir = scan_directory(stream);
+	dir_size = count_files_inside_dir(stream);
 	closedir(stream);
-	s_dir_print_directory(dir, print_element);
+	arr = malloc(dir_size * sizeof *arr);
+	stream = opendir(args[1]);
+	if (*args[1])
+		scan_directory(arr, stream);
+	closedir(stream);
+	output_directory(arr);
+	//print_debug_info();
 	if (is_output_a_terminal())
-		ft_printf("\n");
-	t_dir_free_memory(dir);
-	free(dir);
+		write(1, "\n", 1);
 }
