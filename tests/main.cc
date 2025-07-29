@@ -19,6 +19,10 @@ std::string	exec(const std::string &command) {
 	return (result);
 }
 
+TEST(FT_LS, get_number_of_files_NULL_returns_0) {
+	EXPECT_EQ(0, get_number_of_files(NULL));
+}
+
 TEST(FT_LS, emptyDirectory_noArguments) {
 	system("mkdir emptyDir && cd emptyDir");
 	std::string original_command = exec("cd emptyDir && ls");
