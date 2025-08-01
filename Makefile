@@ -17,16 +17,14 @@ LIBFT=		$(SUBDIRS)/libft.a
 
 # object files
 OBJ=	$(NAME).o \
-		debug.o \
 		utils.o \
 		errors.o \
-		dir_stack.o
+		parser.o \
 
 TEST_OBJ=	main.o \
 			utils.o \
-			debug.o \
 			errors.o \
-			dir_stack.o
+			parser.o \
 
 # rules
 all: $(LIBFT) $(NAME)

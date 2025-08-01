@@ -1,6 +1,5 @@
 
 #include "ft_ls.h"
-#include <locale.h>
 
 int	get_number_of_files(char *args)
 {
@@ -83,20 +82,16 @@ void	output_directory(char arr[][NAME_MAXLEN])
 	}
 }
 
-void	execute(char **argv, char *envp)
+void	execute(char **argv)
 {
 	char	(*arr)[NAME_MAXLEN];
 	int		size;
 
-	if (!argv[1])
-		argv[1] = envp + 4;
-	setlocale(LC_ALL, "en_US.UTF-8");
 	size = get_number_of_files(argv[1]);
 	arr = malloc(size * sizeof *arr);
 	if (!arr)
 		return ;
 	scan_directory(arr, argv[1]);
-	merge_sort(arr, 0, size - 1);
 	output_directory(arr);
 	if (is_output_a_terminal())
 		write(1, "\n", 1);
