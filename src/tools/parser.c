@@ -3,7 +3,18 @@
 
 // handle -l -R -a -r -t
 
-int	handle_args(char **argv)
+void	store_arg(char *arg)
+{
+	DIR*	stream;
+
+	ft_printf("arg: %s\n", arg);
+	stream = opendir(arg);
+	ft_printf("ft_ls: cannot access '%s': %s\n", arg, strerror(errno));
+	(void)stream;
+	
+}	
+
+int		handle_args(char **argv)
 {
 	int	i;
 
@@ -12,6 +23,8 @@ int	handle_args(char **argv)
 	{
 		if (argv[i][0] == '-')
 			check_illegal_flag(argv[i] + 1);
+		else
+			store_arg(argv[i]);
 		i++;
 	}
 

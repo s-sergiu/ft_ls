@@ -1,7 +1,7 @@
 
 #include "ft_ls.h"
 
-int	get_number_of_files(char *args)
+int		get_number_of_files(char *args)
 {
 	DIR*			stream;
 	int				i;
@@ -24,7 +24,7 @@ void	add_file_to_array(char arr[][NAME_MAXLEN], struct dirent* entry, int i)
 	size_t	str_size;
 
 	str_size = ft_strlen(entry->d_name);
-	ft_strlcpy(&arr[i][2], entry->d_name, str_size + 1);
+	ft_strlcpy(&arr[i][NAME], entry->d_name, str_size + 1);
 	arr[i][STRLEN] = str_size;
 	arr[i][FLAGS] = 0;
 	if (entry->d_name[0] == '.')
@@ -51,7 +51,7 @@ void	scan_directory(char arr[][NAME_MAXLEN], char *arg)
 	closedir(stream);
 }
 
-int	is_output_a_terminal(void)
+int		is_output_a_terminal(void)
 {
 	struct stat	file_stats;
 
@@ -72,7 +72,7 @@ void	output_directory(char arr[][NAME_MAXLEN])
 	{
 		if (arr[i][FLAGS] & FLAG_VISIBLE)
 		{
-			write(1, &arr[i][2], arr[i][STRLEN]);
+			write(1, &arr[i][NAME], arr[i][STRLEN]);
 			if (is_tty)
 				write(1, "  ", 2); 
 			else

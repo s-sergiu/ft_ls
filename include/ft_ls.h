@@ -5,6 +5,8 @@
 #include <sys/stat.h>
 #include "libft.h"
 #include <stdlib.h>
+#include <errno.h>
+#include <string.h>
 
 #define T_FILE 8
 #define T_FOLDER 4
@@ -12,8 +14,9 @@
 #define PATH_MAX 4096
 #define STDOUT "/dev/stdout"
 #define STRLEN 0
-#define ILLEGAL_FLAG 10
 #define FLAGS 1
+#define NAME 2
+#define ILLEGAL_FLAG 10
 #define FLAG_HIDDEN 0x1
 #define FLAG_VISIBLE 0x2
 
