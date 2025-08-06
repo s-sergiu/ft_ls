@@ -15,6 +15,8 @@ int		store_paths(const char **arg, int i, int argc)
 	paths = (char **)malloc(sizeof(char *) * argc);
 	if (!stream)
 	{
+		if (arg[i][0] == '-')
+			send_error(errno, arg, i, 2);
 		send_error(errno, arg, i, 0);
 		exit_status = 2;
 	}
@@ -40,7 +42,7 @@ int		handle_args(const char **argv, int argc)
 		return (0);
 	while (argv[index])
 	{
-		if (argv[index][0] == '-')
+		if (argv[index][0] == '-' && ft_isalnum(argv[index][1]))
 		{
 			is_valid_flag(argv, index);
 			argc--;
@@ -48,10 +50,11 @@ int		handle_args(const char **argv, int argc)
 		index++;
 	}
 	index = 1;
+	if (argc == index)
+		return (0);
 	while (argv[index])
 	{
-		if (argv[index][0] != '-')
-			exit_status = store_paths(argv, index, argc);
+		exit_status = store_paths(argv, index, argc);
 		index++;
 	}
 

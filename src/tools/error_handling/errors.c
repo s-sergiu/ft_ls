@@ -8,6 +8,8 @@ void	send_error(int code, const char **arg, int i, int offset)
 		write(2, ": cannot access '", 17);
 		ft_putstr_fd(arg[i], 2);
 		perror("'");
+		if (offset == 2)
+			exit(offset);
 	}
 
 	if (code == ILLEGAL_FLAG)

@@ -23,32 +23,39 @@ std::string	exec(const std::string &command) {
 // UNIT TESTS:
 
 TEST(FT_LS, handleArgs_noArgs) {
-	int argc = 2;
+	int argc = 1;
 	const char *args[argc] = {"./ft_ls", NULL};
 	ASSERT_EQ(0, handle_args(args, argc));
 }
 
 TEST(FT_LS, handleArgs_oneArg_validPath) {
-	int argc = 3;
+	int argc = 2;
 	const char *args[argc] = {"./ft_ls", "src", NULL};
 	ASSERT_EQ(0, handle_args(args, argc));
 }
 
 TEST(FT_LS, handleArgs_oneArg_validOption) {
-	int argc = 3;
+	int argc = 2;
 	const char *args[argc] = {"./ft_ls", "-l", NULL};
 	ASSERT_EQ(0, handle_args(args, argc));
 }
 
+TEST(FT_LS, handleArgs_oneArg_invalidOptionMinus) {
+	int argc = 2;
+	const char *args[argc] = {"./ft_ls", "-", NULL};
+	std::string error = "ft_ls: cannot access '-': No such file or directory\n";
+	ASSERT_EXIT(handle_args(args, argc), testing::ExitedWithCode(2), error);
+}
+
 TEST(FT_LS, handleArgs_oneArg_invalidOption) {
-	int argc = 3;
+	int argc = 2;
 	const char *args[argc] = {"./ft_ls", "-x", NULL};
 	std::string error = "ft_ls: invalid option -- 'x'\nTry 'ls --help' for more information.\n";
 	ASSERT_EXIT(handle_args(args, argc), testing::ExitedWithCode(2), error);
 }
 
 TEST(FT_LS, handleArgs_oneArg_invalidPath) {
-	int argc = 3;
+	int argc = 2;
 	const char *args[argc] = {"./ft_ls", "xxx", NULL};
 	std::string error = "ft_ls: cannot access 'xxx': No such file or directory\n";
 	testing::internal::CaptureStderr();
@@ -58,7 +65,7 @@ TEST(FT_LS, handleArgs_oneArg_invalidPath) {
 }
 
 TEST(FT_LS, handleArgs_oneArg_invalidPathThenFlag_flagError) {
-	int argc = 4;
+	int argc = 3;
 	const char *args[argc] = {"./ft_ls", "xxx", "-x", NULL};
 	std::string error = "ft_ls: invalid option -- 'x'\nTry 'ls --help' for more information.\n";
 	ASSERT_EXIT(handle_args(args, argc), testing::ExitedWithCode(2), error);
