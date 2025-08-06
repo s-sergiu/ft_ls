@@ -1,7 +1,7 @@
 
 #include "ft_ls.h"
 
-int		get_number_of_files(char *args)
+int		get_number_of_files(const char *args)
 {
 	DIR*			stream;
 	int				i;
@@ -33,7 +33,7 @@ void	add_file_to_array(char arr[][NAME_MAXLEN], struct dirent* entry, int i)
 		arr[i][FLAGS] |= FLAG_VISIBLE;
 }
 
-void	scan_directory(char arr[][NAME_MAXLEN], char *arg)
+void	scan_directory(char arr[][NAME_MAXLEN], const char *arg)
 {
 	struct dirent*	entry;
 	DIR*			stream;
@@ -82,7 +82,7 @@ void	output_directory(char arr[][NAME_MAXLEN])
 	}
 }
 
-void	execute(char **argv)
+void	execute(const char **argv)
 {
 	char	(*arr)[NAME_MAXLEN];
 	int		size;

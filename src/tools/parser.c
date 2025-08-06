@@ -1,51 +1,82 @@
-
 #include "ft_ls.h"
 
-// handle -l -R -a -r -t
-
-void	store_arg(char *arg)
+// store a path if valid
+// print error if invalid, dont exit
+int		store_paths(const char **arg, int i, int argc)
 {
 	DIR*	stream;
+	int		path_index;
+	char**	paths;
+	int		exit_status;
 
-	ft_printf("arg: %s\n", arg);
-	stream = opendir(arg);
-	ft_printf("ft_ls: cannot access '%s': %s\n", arg, strerror(errno));
-	(void)stream;
-	
+	path_index = 0;
+	exit_status = 0;
+	stream = opendir(arg[i]);
+	paths = (char **)malloc(sizeof(char *) * argc);
+	if (!stream)
+	{
+		send_error(errno, arg, i);	
+		exit_status = 2;
+	}
+	else
+	{
+		paths[path_index] = ft_strdup(arg[i]);
+		path_index++;
+	}
+	(void)paths;
+	return (exit_status);
 }	
 
-int		handle_args(char **argv)
+// first if parses flags
+// second parses arguments (location);
+int		handle_args(const char **argv, int argc)
 {
-	int	i;
+	int		index;
+	int		exit_status;
 
-	i = 1;
-	while (argv[i])
+	index = 1;
+	exit_status = 0;
+	if (!argv[index])
+		return (0);
+	while (argv[index])
 	{
-		if (argv[i][0] == '-')
-			check_illegal_flag(argv[i] + 1);
-		else
-			store_arg(argv[i]);
-		i++;
+		if (argv[index][0] == '-')
+		{
+			is_valid_flag(argv, index);
+			argc--;
+		}
+		index++;
+	}
+	index = 1;
+	while (argv[index])
+	{
+		if (argv[index][0] != '-')
+			exit_status = store_paths(argv, index, argc);
+		index++;
 	}
 
-	return (1);
+	return (exit_status);
 }
 
-void	check_illegal_flag(char *str)
+// check if valid flag, if invalid exit immediately
+int		is_valid_flag(const char **argv, int index)
 {
 	int		i;
 	int		j;
 	char	valid_flags[6] = {'l', 'R', 'a', 'r', 't', 0};
 
-	i = 0;
+	i = 1;
 	j = 0;
-	while (str[i])
+	if (!argv)
+		return (1);
+	while (argv[index][i])
 	{
-		while (valid_flags[j] && valid_flags[j] != str[i])
+		while (valid_flags[j] && valid_flags[j] != argv[index][1])
 			j++;
 		if (!valid_flags[j])
-			send_error(ILLEGAL_FLAG, str[i]);	
+			send_error(ILLEGAL_FLAG, argv, index);	
 		j = 0;
 		i++;
 	}
+	return (0);
 }
