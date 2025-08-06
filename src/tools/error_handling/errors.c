@@ -1,7 +1,6 @@
 #include "ft_ls.h"
-#include <stdio.h>
 
-void	send_error(int code, const char **arg, int i)
+void	send_error(int code, const char **arg, int i, int offset)
 {
 	if (code == ENOENT)
 	{
@@ -14,7 +13,7 @@ void	send_error(int code, const char **arg, int i)
 	if (code == ILLEGAL_FLAG)
 	{
 		write(2, "ft_ls: invalid option -- '", 26);
-		ft_putstr_fd(arg[i] + 1, 2);
+		ft_putstr_fd(arg[i] + offset, 2);
 		write(2, "'\n", 2);
 		write(2, "Try 'ls --help' for more information.\n", 38);
 		exit(2);

@@ -79,13 +79,34 @@ TEST(FT_LS, handleArgs_multiplePaths_sameNumberOfErrors) {
 
 }
 
-TEST(FT_LS, isValidFlag) {
+TEST(FT_LS, isValidFlagList) {
+	int			argc = 3;
+	const char*	program = "./ft_ls";
+	char*	flags[6] = {"-l", "-R", "a", "r", "t", NULL};
+	const char*	args[argc] = {program, flags[0], NULL};
+	for (int i = 0; i < 5; i++) {
+		args[1] = flags[i];
+		ASSERT_EQ(0, is_valid_flag(args, 1));
+	}
+}
+
+TEST(FT_LS, isValidFlagListWithInvalidFlagAtEnding) {
+	int			argc = 3;
+	const char*	args[argc] = {"./ft_ls", "-larz", NULL};
+	std::string	error = "ft_ls: invalid option -- 'z'\nTry 'ls --help' for more information.\n";
+	ASSERT_EXIT(is_valid_flag(args, 1), testing::ExitedWithCode(2), error);
 }
 
 TEST(FT_LS, isValidFlag_NULL_throwsError) {
+	ASSERT_EQ(1, is_valid_flag(NULL, 1));
 }
 
 TEST(FT_LS, isValidFlag_invalidFlag_throwsError) {
+	int			argc = 2;
+	const char*	program = "./ft_ls";
+	const char*	args[argc] = {program, "-z", NULL};
+	std::string	error = "ft_ls: invalid option -- 'z'\nTry 'ls --help' for more information.\n";
+	ASSERT_EXIT(is_valid_flag(args, 1), testing::ExitedWithCode(2), error);
 }
 
 // UNIT TESTS.

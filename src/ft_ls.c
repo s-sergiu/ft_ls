@@ -11,14 +11,14 @@ t_flags	*init_flags(void) {
 	return (flags);
 }
 
-int		main(int argc, const char **argv, char **envp) 
+int		main(int argc, char **argv, char **envp) 
 {
 	t_flags	*flags;
 
 	flags = init_flags();
 	(void)envp;
-	flags->exit_status = handle_args(argv, argc);
+	flags->exit_status = handle_args((const char**)argv, argc);
 	if (flags->valid_dirs > 0)
-		execute(argv);
+		execute((const char**)argv);
 	return(flags->exit_status);
 }

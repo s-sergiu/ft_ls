@@ -15,7 +15,7 @@ int		store_paths(const char **arg, int i, int argc)
 	paths = (char **)malloc(sizeof(char *) * argc);
 	if (!stream)
 	{
-		send_error(errno, arg, i);	
+		send_error(errno, arg, i, 0);
 		exit_status = 2;
 	}
 	else
@@ -71,10 +71,10 @@ int		is_valid_flag(const char **argv, int index)
 		return (1);
 	while (argv[index][i])
 	{
-		while (valid_flags[j] && valid_flags[j] != argv[index][1])
+		while (valid_flags[j] && valid_flags[j] != argv[index][i])
 			j++;
 		if (!valid_flags[j])
-			send_error(ILLEGAL_FLAG, argv, index);	
+			send_error(ILLEGAL_FLAG, argv, index, i);
 		j = 0;
 		i++;
 	}

@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
+#include <stdio.h>
 
 #define T_FILE 8
 #define T_FOLDER 4
@@ -36,7 +37,7 @@ void			print_debug_info(void);
 int				get_number_of_files(const char*);
 int				handle_args(const char**, int);
 int				is_valid_flag(const char**, int);
-void			send_error(int, const char**, int);
+void			send_error(int, const char**, int, int);
 
 #endif
 
