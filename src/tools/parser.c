@@ -64,22 +64,26 @@ int		handle_args(const char **argv, int argc)
 // check if valid flag, if invalid exit immediately
 int		is_valid_flag(const char **argv, int index)
 {
-	int		i;
-	int		j;
+	int		offset;
+	int		flag_index;
 	char	valid_flags[6] = {'l', 'R', 'a', 'r', 't', 0};
 
-	i = 1;
-	j = 0;
+	offset = 1;
+	flag_index = 0;
 	if (!argv)
 		return (1);
-	while (argv[index][i])
+	while (argv[index][offset])
 	{
-		while (valid_flags[j] && valid_flags[j] != argv[index][i])
-			j++;
-		if (!valid_flags[j])
-			send_error(ILLEGAL_FLAG, argv, index, i);
-		j = 0;
-		i++;
+		while (valid_flags[flag_index])
+		{
+			if (valid_flags[flag_index] == argv[index][offset])
+				break ;
+			flag_index++;
+		}
+		if (!valid_flags[flag_index])
+			send_error(ILLEGAL_FLAG, argv, index, offset);
+		flag_index = 0;
+		offset++;
 	}
 	return (0);
 }
