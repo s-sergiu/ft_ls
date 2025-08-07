@@ -1,7 +1,7 @@
 #include "ft_ls.h"
 
-// store a path if valid
-// print error if invalid, dont exit
+// Store a path if valid;
+// Print error if invalid, dont exit;
 int		store_paths(const char **arg, int i, int argc)
 {
 	DIR*	stream;
@@ -29,8 +29,8 @@ int		store_paths(const char **arg, int i, int argc)
 	return (exit_status);
 }	
 
-// first if parses flags
-// second parses arguments (location);
+// First it parses flags;
+// Second parses arguments (location);
 int		handle_args(const char **argv, int argc)
 {
 	int		index;
@@ -61,7 +61,10 @@ int		handle_args(const char **argv, int argc)
 	return (exit_status);
 }
 
-// check if valid flag, if invalid exit immediately
+// Check if valid flag, if invalid exit immediately
+//
+// **argv:	entire main arguments
+// index:	index of the argument (always > 1);
 int		is_valid_flag(const char **argv, int index)
 {
 	int		offset;

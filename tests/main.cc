@@ -53,7 +53,7 @@ TEST(FT_LS, handleArgs_oneArg_invalidOptionMinus) {
 	const char	*args[argc] = {"./ft_ls", "-", NULL};
 	string err = "ft_ls: cannot access '-': No such file or directory\n";
 
-	ASSERT_EXIT(handle_args(args, argc), ExitedWithCode(2), err);
+	ASSERT_EXIT(handle_args(args, argc), ExitedWithCode(2), Eq(err));
 }
 
 TEST(FT_LS, handleArgs_oneArg_invalidOption) {
@@ -62,7 +62,7 @@ TEST(FT_LS, handleArgs_oneArg_invalidOption) {
 	string		err = "ft_ls: invalid option -- 'x'\n"
 					  "Try 'ls --help' for more information.\n";
 
-	ASSERT_EXIT(handle_args(args, argc), ExitedWithCode(2), err);
+	ASSERT_EXIT(handle_args(args, argc), ExitedWithCode(2), Eq(err));
 }
 
 TEST(FT_LS, handleArgs_oneArg_invalidPath) {
@@ -79,13 +79,22 @@ TEST(FT_LS, handleArgs_oneArg_invalidPath) {
 	ASSERT_EQ(capture, err);
 }
 
-TEST(FT_LS, handleArgs_oneArg_invalidPathThenFlag_flagError) {
+TEST(FT_LS, handleArgs_twoArgs_invalidPathThenInvalidFlag_flagError) {
 	int			argc = 3;
 	const char	*args[argc] = {"./ft_ls", "xxx", "-x", NULL};
 	string		err = "ft_ls: invalid option -- 'x'\n"
 					  "Try 'ls --help' for more information.\n";
 
-	ASSERT_EXIT(handle_args(args, argc), ExitedWithCode(2), err);
+	ASSERT_EXIT(handle_args(args, argc), ExitedWithCode(2), Eq(err));
+}
+
+TEST(FT_LS, handleArgs_twoArgs_invalidPathThenValidFlag_pathError) {
+	int			argc = 3;
+	const char	*args[argc] = {"./ft_ls", "xxx", "-l", NULL};
+	string		err = "ft_ls: cannot access 'xxx': "
+					  "No such file or directory\n";
+
+	ASSERT_EXIT(handle_args(args, argc), ExitedWithCode(2), Eq(err));
 }
 
 TEST(FT_LS, handleArgs_multiplePaths_sameNumberOfErrors) {
@@ -127,7 +136,7 @@ TEST(FT_LS, isValidFlagListWithInvalidFlagAtEnding) {
 	string		err = "ft_ls: invalid option -- 'z'\n"
 					  "Try 'ls --help' for more information.\n";
 
-	ASSERT_EXIT(is_valid_flag(args, 1), ExitedWithCode(2), err);
+	ASSERT_EXIT(is_valid_flag(args, 1), ExitedWithCode(2), Eq(err));
 }
 
 TEST(FT_LS, isValidFlag_NULL_throwsError) {
@@ -141,7 +150,7 @@ TEST(FT_LS, isValidFlag_invalidFlag_throwsError) {
 	string		err = "ft_ls: invalid option -- 'z'\n"
 					  "Try 'ls --help' for more information.\n";
 
-	ASSERT_EXIT(is_valid_flag(args, 1), ExitedWithCode(2), err);
+	ASSERT_EXIT(is_valid_flag(args, 1), ExitedWithCode(2), Eq(err));
 }
 
 // UNIT TESTS.
