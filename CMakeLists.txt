@@ -20,13 +20,17 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
-add_library(ls STATIC src/tools/utils.c include/ft_ls.h)
+add_library(ls STATIC src/tools/utils.c src/tools/parser.c include/ft_ls.h
+			src/tools/error_handling/errors.c src/tools/struct.c)
 add_library(ft STATIC libs/Libft/src/ft_printf.c libs/Libft/src/ft_strlcat.c
 			libs/Libft/src/ft_strlen.c libs/Libft/src/ft_putchar_fd.c
 			libs/Libft/src/ft_strncmp.c libs/Libft/src/printf_utils.c
 			libs/Libft/src/check_utils.c libs/Libft/src/ft_itoa.c
 			libs/Libft/src/ft_putnbr_fd.c libs/Libft/src/ft_putstr_fd.c
 			libs/Libft/src/ft_itoa_unsigned.c libs/Libft/src/ft_strlcpy.c
+			libs/Libft/src/ft_isalnum.c libs/Libft/src/ft_strdup.c
+			libs/Libft/src/ft_isalpha.c libs/Libft/src/ft_lstnew.c
+			libs/Libft/src/ft_lstadd_back.c libs/Libft/src/ft_isdigit.c
 			libs/Libft/include/libft.h)
 
 add_executable(
