@@ -31,32 +31,30 @@ void	print_dirs(void* arg)
 int		handle_args(t_data* data)
 {
 	int		index;
-	char	**parsed_args;
 
-	parsed_args = data->argv;
 	index = 1;
-	while (parsed_args[index])
+	while (data->argv[index])
 	{
-		if (parsed_args[index][0] == '-' && ft_isalnum(parsed_args[index][1]))
+		if (data->argv[index][0] == '-' && ft_isalnum(data->argv[index][1]))
 		{
-			is_valid_flag(parsed_args, index);
+			is_valid_flag(data->argv, index);
 			// free null and reset pointer
 			// will not work with arrays I think
 		}
 		else
-			ft_lstadd_back(&data->dirs, ft_lstnew(parsed_args[index]));
+			ft_lstadd_back(&data->dirs, ft_lstnew(data->argv[index]));
 		index++;
 	}
 	index = 1;
-	while (parsed_args[index])
+	while (data->argv[index])
 	{
-		if (parsed_args[index][0] == '-' && ft_isalnum(parsed_args[index][1]))
+		if (data->argv[index][0] == '-' && ft_isalnum(data->argv[index][1]))
 		{
-			if (is_valid_flag(parsed_args, index) != 0)
-				data->exit_status = store_paths(parsed_args, index);
+			if (is_valid_flag(data->argv, index) != 0)
+				data->exit_status = store_paths(data->argv, index);
 		}
 		else
-			data->exit_status = store_paths(parsed_args, index);
+			data->exit_status = store_paths(data->argv, index);
 		index++;
 	}
 
