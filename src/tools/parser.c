@@ -2,17 +2,13 @@
 
 // Store a path if valid;
 // Print error if invalid, dont exit;
-int		store_paths(char **arg, int i, int argc)
+int		store_paths(char **arg, int i)
 {
 	DIR		*stream;
-	int		path_index;
-	char	**paths;
 	int		exit_status;
 
-	path_index = 0;
 	exit_status = 0;
 	stream = opendir(arg[i]);
-	paths = (char **)malloc(sizeof(char *) * argc);
 	if (!stream)
 	{
 		if (arg[i][0] == '-')
@@ -20,12 +16,6 @@ int		store_paths(char **arg, int i, int argc)
 		send_error(errno, arg, i, 0);
 		exit_status = 2;
 	}
-	else
-	{
-		paths[path_index] = ft_strdup(arg[i]);
-		path_index++;
-	}
-	(void)paths;
 	return (exit_status);
 }	
 
@@ -63,10 +53,10 @@ int		handle_args(t_data* data)
 		if (parsed_args[index][0] == '-' && ft_isalnum(parsed_args[index][1]))
 		{
 			if (is_valid_flag(parsed_args, index) != 0)
-				data->exit_status = store_paths(parsed_args, index, data->argc);
+				data->exit_status = store_paths(parsed_args, index);
 		}
 		else
-			data->exit_status = store_paths(parsed_args, index, data->argc);
+			data->exit_status = store_paths(parsed_args, index);
 		index++;
 	}
 
