@@ -1,6 +1,6 @@
 #include "ft_ls.h"
 
-void	send_error(int code, const char **arg, int i, int offset)
+void	send_error(int code, char **arg, int i, int offset)
 {
 	if (code == ENOENT)
 	{

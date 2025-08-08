@@ -18,11 +18,13 @@ LIBFT=		$(SUBDIRS)/libft.a
 # object files
 OBJ=	$(NAME).o \
 		utils.o \
+		struct.o \
 		errors.o \
 		parser.o \
 
 TEST_OBJ=	main.o \
 			utils.o \
+			struct.o \
 			errors.o \
 			parser.o \
 

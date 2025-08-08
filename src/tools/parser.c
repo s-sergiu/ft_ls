@@ -2,11 +2,11 @@
 
 // Store a path if valid;
 // Print error if invalid, dont exit;
-int		store_paths(const char **arg, int i, int argc)
+int		store_paths(char **arg, int i, int argc)
 {
-	DIR*	stream;
+	DIR		*stream;
 	int		path_index;
-	char**	paths;
+	char	**paths;
 	int		exit_status;
 
 	path_index = 0;
@@ -29,43 +29,55 @@ int		store_paths(const char **arg, int i, int argc)
 	return (exit_status);
 }	
 
-// First it parses flags;
-// Second parses arguments (location);
-int		handle_args(const char **argv, int argc)
+void	print_dirs(void* arg)
+{
+	char*	str;
+	str = arg;
+	printf("str: %s\n", str);
+}
+// First it parses flags. If it encounters an invalid flag it exits code 2;
+// Then it resets the index of the arguments and starts parsing them to see if
+// they are paths and they are valid.
+int		handle_args(t_data* data)
 {
 	int		index;
-	int		exit_status;
+	char	**parsed_args;
 
+	parsed_args = data->argv;
 	index = 1;
-	exit_status = 0;
-	if (!argv[index])
-		return (0);
-	while (argv[index])
+	while (parsed_args[index])
 	{
-		if (argv[index][0] == '-' && ft_isalnum(argv[index][1]))
+		if (parsed_args[index][0] == '-' && ft_isalnum(parsed_args[index][1]))
 		{
-			is_valid_flag(argv, index);
-			argc--;
+			is_valid_flag(parsed_args, index);
+			// free null and reset pointer
+			// will not work with arrays I think
 		}
+		else
+			ft_lstadd_back(&data->dirs, ft_lstnew(parsed_args[index]));
 		index++;
 	}
 	index = 1;
-	if (argc == index)
-		return (0);
-	while (argv[index])
+	while (parsed_args[index])
 	{
-		exit_status = store_paths(argv, index, argc);
+		if (parsed_args[index][0] == '-' && ft_isalnum(parsed_args[index][1]))
+		{
+			if (is_valid_flag(parsed_args, index) != 0)
+				data->exit_status = store_paths(parsed_args, index, data->argc);
+		}
+		else
+			data->exit_status = store_paths(parsed_args, index, data->argc);
 		index++;
 	}
 
-	return (exit_status);
+	return (data->exit_status);
 }
 
 // Check if valid flag, if invalid exit immediately
 //
 // **argv:	entire main arguments
 // index:	index of the argument (always > 1);
-int		is_valid_flag(const char **argv, int index)
+int		is_valid_flag(char **argv, int index)
 {
 	int		offset;
 	int		flag_index;

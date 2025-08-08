@@ -1,24 +1,14 @@
 
 #include "ft_ls.h"
 
-t_flags	*init_flags(void) {
-	t_flags *flags;
-
-	flags = (t_flags *)malloc(sizeof(t_flags));
-	flags->exit_status = EXIT_SUCCESS;
-	flags->valid_dirs = 0;
-
-	return (flags);
-}
-
 int		main(int argc, char **argv, char **envp) 
 {
-	t_flags	*flags;
+	t_data*	data;
 
-	flags = init_flags();
+	data = init_data(argc, argv);
 	(void)envp;
-	flags->exit_status = handle_args((const char**)argv, argc);
-	if (flags->valid_dirs > 0)
+	data->exit_status = handle_args(data);
+	if (data->valid_dirs > 0)
 		execute((const char**)argv);
-	return(flags->exit_status);
+	return(data->exit_status);
 }

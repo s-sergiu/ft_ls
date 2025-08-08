@@ -3,8 +3,8 @@
 
 int		get_number_of_files(const char *args)
 {
-	DIR*			stream;
-	int				i;
+	DIR	*stream;
+	int	i;
 	
 	if (!args)
 		return (0);

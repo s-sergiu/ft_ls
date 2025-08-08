@@ -22,22 +22,26 @@
 #define FLAG_HIDDEN 0x1
 #define FLAG_VISIBLE 0x2
 
-typedef struct s_flags t_flags;
+typedef struct s_data t_data;
+typedef struct s_list t_dirs;
 
-struct s_flags {
-	int	exit_status;
-	int valid_dirs;
+struct s_data {
+	int		exit_status;
+	int		valid_dirs;
+	int		argc;
+	char**	argv;
+	t_dirs*	dirs;
 };
 
 int				is_output_a_terminal();
-t_flags			*init_flags(void);
+t_data*			init_data(int, char**);
 void			execute(const char**);
 void			scan_directory(char[][NAME_MAXLEN], const char*);
 void			print_debug_info(void);
 int				get_number_of_files(const char*);
-int				handle_args(const char**, int);
-int				is_valid_flag(const char**, int);
-void			send_error(int, const char**, int, int);
+int				handle_args(t_data*);
+int				is_valid_flag(char**, int);
+void			send_error(int, char**, int, int);
 
 #endif
 
