@@ -1,3 +1,0 @@
-* fix paths in tests so that they run in MacOS and Linux [FIXED]
-* sort list alphabetically (use ft_strncmp - bubble sort with temp list)
-	Resources : https://excalidraw.com/#json=6HiuLUCiFAuCfcQFeuR57,l4LsPoyIim9J9UPXOaQ3Ug
