@@ -6,3 +6,4 @@ allowedFunctions
 runtests
 tags
 build
+*.patch
