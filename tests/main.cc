@@ -61,7 +61,12 @@ TEST(FT_LS, handleArgs_oneArg_invalidOptionMinus) {
 	string		err = "ft_ls: cannot access '-': No such file or directory\n";
 
 	data = init_data(argc, args);
-	ASSERT_EXIT(handle_args(data), ExitedWithCode(2), Eq(err));
+	CaptureStderr();
+	ASSERT_EQ(2, handle_args(data));
+
+	string		capture = GetCapturedStderr();
+
+	ASSERT_EQ(capture, err);
 }
 
 TEST(FT_LS, handleArgs_oneArg_invalidOption) {

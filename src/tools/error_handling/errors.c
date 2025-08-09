@@ -1,17 +1,20 @@
 #include "ft_ls.h"
 
-void	send_error(int code, char **arg, int i, int offset)
+void	dir_error(int code, char* arg, t_data* data, int offset)
 {
 	if (code == ENOENT)
 	{
-		ft_putstr_fd(arg[0] + 2, 2);
+		ft_putstr_fd(data->argv[0] + 2, 2);
 		write(2, ": cannot access '", 17);
-		ft_putstr_fd(arg[i], 2);
+		ft_putstr_fd(arg, 2);
 		perror("'");
 		if (offset == 2)
 			exit(offset);
 	}
+}
 
+void	send_error(int code, char **arg, int i, int offset)
+{
 	if (code == ILLEGAL_FLAG)
 	{
 		write(2, "ft_ls: invalid option -- '", 26);

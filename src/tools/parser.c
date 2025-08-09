@@ -2,21 +2,19 @@
 
 // Store a path if valid;
 // Print error if invalid, dont exit;
-int		store_paths(char **arg, int i)
+int		store_paths(t_data* data, void* content)
 {
-	DIR		*stream;
-	int		exit_status;
+	DIR*	stream;
+	char*	arg;
 
-	exit_status = 0;
-	stream = opendir(arg[i]);
+	arg = content;
+	stream = opendir(arg);
 	if (!stream)
 	{
-		if (arg[i][0] == '-')
-			send_error(errno, arg, i, 2);
-		send_error(errno, arg, i, 0);
-		exit_status = 2;
+		dir_error(errno, arg, data, 0);
+		return (2);
 	}
-	return (exit_status);
+	return (0);
 }	
 
 void	print_dirs(void* arg)
@@ -46,16 +44,14 @@ int		handle_args(t_data* data)
 		index++;
 	}
 	index = 1;
-	while (data->argv[index])
+	while (data->dirs)
 	{
-		if (data->argv[index][0] == '-' && ft_isalnum(data->argv[index][1]))
+		if (store_paths(data, data->dirs->content) == 2)
 		{
-			if (is_valid_flag(data->argv, index) != 0)
-				data->exit_status = store_paths(data->argv, index);
+			data->exit_status = 2;
+			//remove item from list;
 		}
-		else
-			data->exit_status = store_paths(data->argv, index);
-		index++;
+		data->dirs = data->dirs->next;
 	}
 
 	return (data->exit_status);
