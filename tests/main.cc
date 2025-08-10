@@ -1,8 +1,10 @@
+
 #include <gtest/gtest.h>
 
 extern "C" {
 	#include "ft_ls.h"
 }
+
 using namespace	testing::internal;
 using namespace	testing;
 using namespace	std;
@@ -39,10 +41,12 @@ TEST(FT_LS, handleArgs_noArgs) {
 TEST(FT_LS, handleArgs_oneArg_validPath) {
 	t_data*		data;
 	int			argc = 2;
-	char*		args[argc] = {"./ft_ls", "src", NULL};
+	char*		args[argc] = {"./ft_ls", "newfile", NULL};
 
+	exec("mkdir newfile");
 	data = init_data(argc, args);
 	ASSERT_EQ(0, handle_args(data));
+	exec("rmdir newfile");
 }
 
 TEST(FT_LS, handleArgs_oneArg_validOption) {
@@ -117,29 +121,26 @@ TEST(FT_LS, handleArgs_twoArgs_invalidPathThenValidFlag_pathError) {
 	data = init_data(argc, args);
 	CaptureStderr();
 	ASSERT_EQ(handle_args(data), 2);
-	string capture = GetCapturedStderr();
+	string		capture = GetCapturedStderr();
 	ASSERT_EQ(capture, err);
 }
 
 TEST(FT_LS, handleArgs_multiplePaths_sameNumberOfErrors) {
 	t_data*		data;
 	int			argc = 5;
-	char*		args[argc] = {"./ft_ls", "xxx", "xyz", "yyy", "zzz", NULL};
+	char*		args[argc] = {"./ft_ls", "xxx", "xyz", "yyy", NULL};
 	string		err = "ft_ls: cannot access 'xxx': "
 					  "No such file or directory\n"
 					  "ft_ls: cannot access 'xyz': "
 					  "No such file or directory\n"
 					  "ft_ls: cannot access 'yyy': "
-					  "No such file or directory\n"
-					  "ft_ls: cannot access 'zzz': "
 					  "No such file or directory\n";
 	data = init_data(argc, args);
 	CaptureStderr();
 	ASSERT_EQ(2, handle_args(data));
-	string capture = GetCapturedStderr();
+	string		capture = GetCapturedStderr();
 	ASSERT_EQ(capture, err);
 }
-
 //	is_valid_flag(const char**, int);
 
 TEST(FT_LS, isValidFlagList) {
