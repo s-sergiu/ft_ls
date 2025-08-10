@@ -10,5 +10,6 @@ int		main(int argc, char **argv, char **envp)
 	data->exit_status = handle_args(data);
 	if (data->valid_dirs > 0)
 		execute((const char**)argv);
+	destroy_data(data);
 	return(data->exit_status);
 }

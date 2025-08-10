@@ -43,6 +43,7 @@ int				handle_args(t_data*);
 int				is_valid_flag(char**, int);
 void			send_error(int, char**, int, int);
 void			dir_error(int, char*, t_data*, int);
+void			destroy_data(t_data* data);
 
 #endif
 

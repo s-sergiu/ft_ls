@@ -21,3 +21,18 @@ t_data*	init_data(int argc, char** argv) {
 
 	return (data);
 }
+
+void	destroy_data(t_data* data) 
+{
+	int	index;
+
+	index = 0;
+	while(data->argv[index])
+	{
+		free(data->argv[index]);
+		data->argv[index] = NULL;
+		index++;
+	}
+	free(data->argv);
+	data->argv = NULL;
+}
