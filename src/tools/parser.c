@@ -35,7 +35,7 @@ int		handle_args(t_data* data)
 	{
 		if (data->argv[index][0] == '-' && ft_isalnum(data->argv[index][1]))
 		{
-			is_valid_flag(data->argv, index);
+			is_valid_flag(data->argv[index]);
 			// free null and reset pointer
 			// will not work with arrays I think
 		}
@@ -61,28 +61,28 @@ int		handle_args(t_data* data)
 //
 // **argv:	entire main arguments
 // index:	index of the argument (always > 1);
-int		is_valid_flag(char **argv, int index)
+int		is_valid_flag(char *argv)
 {
-	int		offset;
+	int		index;
 	int		flag_index;
 	char	valid_flags[6] = {'l', 'R', 'a', 'r', 't', 0};
 
-	offset = 1;
+	index = 1;
 	flag_index = 0;
 	if (!argv)
 		return (1);
-	while (argv[index][offset])
+	while (argv[index])
 	{
 		while (valid_flags[flag_index])
 		{
-			if (valid_flags[flag_index] == argv[index][offset])
+			if (valid_flags[flag_index] == argv[index])
 				break ;
 			flag_index++;
 		}
 		if (!valid_flags[flag_index])
-			send_error(ILLEGAL_FLAG, argv, index, offset);
+			flag_error(ILLEGAL_FLAG, argv, index);
 		flag_index = 0;
-		offset++;
+		index++;
 	}
 	return (0);
 }

@@ -151,7 +151,7 @@ TEST(FT_LS, isValidFlagList) {
 
 	for (int i = 0; i < 5; i++) {
 		args[1] = flags[i];
-		ASSERT_EQ(0, is_valid_flag((char **)args, 1));
+		ASSERT_EQ(0, is_valid_flag((char *)args[1]));
 	}
 }
 
@@ -161,11 +161,11 @@ TEST(FT_LS, isValidFlagListWithInvalidFlagAtEnding) {
 	string		err = "ft_ls: invalid option -- 'z'\n"
 					  "Try 'ls --help' for more information.\n";
 
-	ASSERT_EXIT(is_valid_flag((char **)args, 1), ExitedWithCode(2), Eq(err));
+	ASSERT_EXIT(is_valid_flag((char *)args[1]), ExitedWithCode(2), Eq(err));
 }
 
 TEST(FT_LS, isValidFlag_NULL_throwsError) {
-	ASSERT_EQ(1, is_valid_flag(NULL, 1));
+	ASSERT_EQ(1, is_valid_flag(NULL));
 }
 
 TEST(FT_LS, isValidFlag_invalidFlag_throwsError) {
@@ -175,7 +175,7 @@ TEST(FT_LS, isValidFlag_invalidFlag_throwsError) {
 	string		err = "ft_ls: invalid option -- 'z'\n"
 					  "Try 'ls --help' for more information.\n";
 
-	ASSERT_EXIT(is_valid_flag((char **)args, 1), ExitedWithCode(2), Eq(err));
+	ASSERT_EXIT(is_valid_flag((char *)args[1]), ExitedWithCode(2), Eq(err));
 }
 
 // UNIT TESTS.

@@ -13,12 +13,12 @@ void	dir_error(int code, char* arg, t_data* data, int offset)
 	}
 }
 
-void	send_error(int code, char **arg, int i, int offset)
+void	flag_error(int code, char *arg, int i)
 {
 	if (code == ILLEGAL_FLAG)
 	{
 		write(2, "ft_ls: invalid option -- '", 26);
-		write(2, &arg[i][offset], 1);
+		write(2, &arg[i], 1);
 		write(2, "'\n", 2);
 		write(2, "Try 'ls --help' for more information.\n", 38);
 		exit(2);

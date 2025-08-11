@@ -40,8 +40,8 @@ void			scan_directory(char[][NAME_MAXLEN], const char*);
 void			print_debug_info(void);
 int				get_number_of_files(const char*);
 int				handle_args(t_data*);
-int				is_valid_flag(char**, int);
-void			send_error(int, char**, int, int);
+int				is_valid_flag(char*);
+void			flag_error(int, char*, int);
 void			dir_error(int, char*, t_data*, int);
 void			destroy_data(t_data* data);
 
