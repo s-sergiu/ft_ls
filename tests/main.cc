@@ -32,19 +32,19 @@ string	exec(const std::string &command) {
 TEST(FT_LS, handleArgs_noArgs) {
 	t_data*		data;
 	int			argc = 1;
-	char*		args[argc] = {"./ft_ls", NULL};
+	const char*	args[argc] = {"./ft_ls", NULL};
 
-	data = init_data(argc, args);
+	data = init_data(argc, (char **)args);
 	ASSERT_EQ(0, handle_args(data));
 }
 
 TEST(FT_LS, handleArgs_oneArg_validPath) {
 	t_data*		data;
 	int			argc = 2;
-	char*		args[argc] = {"./ft_ls", "newfile", NULL};
+	const char*	args[argc] = {"./ft_ls", "newfile", NULL};
 
 	exec("mkdir newfile");
-	data = init_data(argc, args);
+	data = init_data(argc, (char **)args);
 	ASSERT_EQ(0, handle_args(data));
 	exec("rmdir newfile");
 }
@@ -52,19 +52,19 @@ TEST(FT_LS, handleArgs_oneArg_validPath) {
 TEST(FT_LS, handleArgs_oneArg_validOption) {
 	t_data*		data;
 	int			argc = 2;
-	char*	args[argc] = {"./ft_ls", "-l", NULL};
+	const char*	args[argc] = {"./ft_ls", "-l", NULL};
 
-	data = init_data(argc, args);
+	data = init_data(argc, (char **)args);
 	ASSERT_EQ(0, handle_args(data));
 }
 
 TEST(FT_LS, handleArgs_oneArg_invalidOptionMinus) {
 	t_data*		data;
 	int			argc = 2;
-	char*		args[argc] = {"./ft_ls", "-", NULL};
+	const char*	args[argc] = {"./ft_ls", "-", NULL};
 	string		err = "ft_ls: cannot access '-': No such file or directory\n";
 
-	data = init_data(argc, args);
+	data = init_data(argc, (char **)args);
 	CaptureStderr();
 	ASSERT_EQ(2, handle_args(data));
 
@@ -76,22 +76,22 @@ TEST(FT_LS, handleArgs_oneArg_invalidOptionMinus) {
 TEST(FT_LS, handleArgs_oneArg_invalidOption) {
 	t_data*		data;
 	int			argc = 2;
-	char*		args[argc] = {"./ft_ls", "-x", NULL};
+	const char*	args[argc] = {"./ft_ls", "-x", NULL};
 	string		err = "ft_ls: invalid option -- 'x'\n"
 					  "Try 'ls --help' for more information.\n";
 
-	data = init_data(argc, args);
+	data = init_data(argc, (char **)args);
 	ASSERT_EXIT(handle_args(data), ExitedWithCode(2), Eq(err));
 }
 
 TEST(FT_LS, handleArgs_oneArg_invalidPath) {
 	t_data*		data;
 	int			argc = 2;
-	char*		args[argc] = {"./ft_ls", "xxx", NULL};
+	const char*	args[argc] = {"./ft_ls", "xxx", NULL};
 	string		err = "ft_ls: cannot access 'xxx': "
 					  "No such file or directory\n";
 
-	data = init_data(argc, args);
+	data = init_data(argc, (char **)args);
 	CaptureStderr();
 	ASSERT_EQ(2, handle_args(data));
 
@@ -103,22 +103,22 @@ TEST(FT_LS, handleArgs_oneArg_invalidPath) {
 TEST(FT_LS, handleArgs_twoArgs_invalidPathThenInvalidFlag_flagError) {
 	t_data*		data;
 	int			argc = 3;
-	char*		args[argc] = {"./ft_ls", "xxx", "-x", NULL};
+	const char*	args[argc] = {"./ft_ls", "xxx", "-x", NULL};
 	string		err = "ft_ls: invalid option -- 'x'\n"
 					  "Try 'ls --help' for more information.\n";
 
-	data = init_data(argc, args);
+	data = init_data(argc, (char **)args);
 	ASSERT_EXIT(handle_args(data), ExitedWithCode(2), Eq(err));
 }
 
 TEST(FT_LS, handleArgs_twoArgs_invalidPathThenValidFlag_pathError) {
 	t_data*		data;
 	int			argc = 3;
-	char*		args[argc] = {"./ft_ls", "xxx", "-l", NULL};
+	const char*	args[argc] = {"./ft_ls", "xxx", "-l", NULL};
 	string		err = "ft_ls: cannot access 'xxx': "
 					  "No such file or directory\n";
 
-	data = init_data(argc, args);
+	data = init_data(argc, (char **)args);
 	CaptureStderr();
 	ASSERT_EQ(handle_args(data), 2);
 	string		capture = GetCapturedStderr();
@@ -128,14 +128,14 @@ TEST(FT_LS, handleArgs_twoArgs_invalidPathThenValidFlag_pathError) {
 TEST(FT_LS, handleArgs_multiplePaths_sameNumberOfErrors) {
 	t_data*		data;
 	int			argc = 5;
-	char*		args[argc] = {"./ft_ls", "xxx", "xyz", "yyy", NULL};
+	const char*	args[argc] = {"./ft_ls", "xxx", "xyz", "yyy", NULL};
 	string		err = "ft_ls: cannot access 'xxx': "
 					  "No such file or directory\n"
 					  "ft_ls: cannot access 'xyz': "
 					  "No such file or directory\n"
 					  "ft_ls: cannot access 'yyy': "
 					  "No such file or directory\n";
-	data = init_data(argc, args);
+	data = init_data(argc, (char **)args);
 	CaptureStderr();
 	ASSERT_EQ(2, handle_args(data));
 	string		capture = GetCapturedStderr();
@@ -145,23 +145,23 @@ TEST(FT_LS, handleArgs_multiplePaths_sameNumberOfErrors) {
 
 TEST(FT_LS, isValidFlagList) {
 	int			argc = 3;
-	char*		program = "./ft_ls";
-	char		*flags[6] = {"-l", "-R", "a", "r", "t", NULL};
-	char*		args[argc] = {program, flags[0], NULL};
+	const char*	program = "./ft_ls";
+	const char*	flags[6] = {"-l", "-R", "a", "r", "t", NULL};
+	const char*	args[argc] = {program, flags[0], NULL};
 
 	for (int i = 0; i < 5; i++) {
 		args[1] = flags[i];
-		ASSERT_EQ(0, is_valid_flag(args, 1));
+		ASSERT_EQ(0, is_valid_flag((char **)args, 1));
 	}
 }
 
 TEST(FT_LS, isValidFlagListWithInvalidFlagAtEnding) {
 	int			argc = 3;
-	char*		args[argc] = {"./ft_ls", "-larz", NULL};
+	const char*	args[argc] = {"./ft_ls", "-larz", NULL};
 	string		err = "ft_ls: invalid option -- 'z'\n"
 					  "Try 'ls --help' for more information.\n";
 
-	ASSERT_EXIT(is_valid_flag(args, 1), ExitedWithCode(2), Eq(err));
+	ASSERT_EXIT(is_valid_flag((char **)args, 1), ExitedWithCode(2), Eq(err));
 }
 
 TEST(FT_LS, isValidFlag_NULL_throwsError) {
@@ -170,12 +170,12 @@ TEST(FT_LS, isValidFlag_NULL_throwsError) {
 
 TEST(FT_LS, isValidFlag_invalidFlag_throwsError) {
 	int			argc = 2;
-	char*		program = "./ft_ls";
-	char*		args[argc] = {program, "-z", NULL};
+	const char*	program = "./ft_ls";
+	const char*	args[argc] = {program, "-z", NULL};
 	string		err = "ft_ls: invalid option -- 'z'\n"
 					  "Try 'ls --help' for more information.\n";
 
-	ASSERT_EXIT(is_valid_flag(args, 1), ExitedWithCode(2), Eq(err));
+	ASSERT_EXIT(is_valid_flag((char **)args, 1), ExitedWithCode(2), Eq(err));
 }
 
 // UNIT TESTS.
