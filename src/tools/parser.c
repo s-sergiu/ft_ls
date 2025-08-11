@@ -57,32 +57,39 @@ int		handle_args(t_data* data)
 	return (data->exit_status);
 }
 
+int		validated_flag(char flag)
+{
+	int		index;
+	char	valid_flags[6] = {'l', 'R', 'a', 'r', 't', 0};
+
+	index = 0;
+	while (valid_flags[index])
+	{
+		if (valid_flags[index] == flag)
+			return (0);
+		index++;
+	}
+	return (1);
+}
+
 // Check if valid flag, if invalid exit immediately
 //
 // **argv:	entire main arguments
 // index:	index of the argument (always > 1);
+
 int		is_valid_flag(char *argv)
 {
 	int		index;
-	int		flag_index;
-	char	valid_flags[6] = {'l', 'R', 'a', 'r', 't', 0};
 
 	index = 1;
-	flag_index = 0;
 	if (!argv)
 		return (1);
 	while (argv[index])
 	{
-		while (valid_flags[flag_index])
-		{
-			if (valid_flags[flag_index] == argv[index])
-				break ;
-			flag_index++;
-		}
-		if (!valid_flags[flag_index])
+		if (!validated_flag(argv[index]))
+			index++;
+		else
 			flag_error(ILLEGAL_FLAG, argv, index);
-		flag_index = 0;
-		index++;
 	}
 	return (0);
 }
