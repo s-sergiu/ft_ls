@@ -141,6 +141,7 @@ TEST(FT_LS, handleArgs_multiplePaths_sameNumberOfErrors) {
 	string		capture = GetCapturedStderr();
 	ASSERT_EQ(capture, err);
 }
+
 //	is_valid_flag(const char**, int);
 
 TEST(FT_LS, isValidFlagList) {

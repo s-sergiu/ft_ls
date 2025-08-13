@@ -19,6 +19,7 @@ LIBFT=		$(SUBDIRS)/libft.a
 OBJ=	$(NAME).o \
 		utils.o \
 		struct.o \
+		debug.o \
 		errors.o \
 		parser.o \
 
