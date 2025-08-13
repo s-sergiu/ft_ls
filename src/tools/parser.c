@@ -26,7 +26,7 @@ void	print_dirs(void* arg)
 		printf("str: %s\n", str);
 }
 
-void	remove_path_from_list(t_list** list, void* content)
+void	lst_remove_path(t_list** list, void* content)
 {
 	t_list*	temp;
 
@@ -65,7 +65,7 @@ void	handle_args(t_data* data)
 		if (store_paths(data, current->content) == 2)
 		{
 			data->exit_status = 2;
-			remove_path_from_list(&current, current->content);
+			lst_remove_path(&current, current->content);
 		}
 		current = current->next;
 	}
