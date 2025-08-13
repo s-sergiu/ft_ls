@@ -35,7 +35,8 @@ TEST(FT_LS, handleArgs_noArgs) {
 	const char*	args[argc] = {"./ft_ls", NULL};
 
 	data = init_data(argc, (char **)args);
-	ASSERT_EQ(0, handle_args(data));
+	handle_args(data);
+	ASSERT_EQ(0, data->exit_status);
 }
 
 TEST(FT_LS, handleArgs_oneArg_validPath) {
@@ -45,7 +46,8 @@ TEST(FT_LS, handleArgs_oneArg_validPath) {
 
 	exec("mkdir newfile");
 	data = init_data(argc, (char **)args);
-	ASSERT_EQ(0, handle_args(data));
+	handle_args(data);
+	ASSERT_EQ(0, data->exit_status);
 	exec("rmdir newfile");
 }
 
@@ -55,7 +57,8 @@ TEST(FT_LS, handleArgs_oneArg_validOption) {
 	const char*	args[argc] = {"./ft_ls", "-l", NULL};
 
 	data = init_data(argc, (char **)args);
-	ASSERT_EQ(0, handle_args(data));
+	handle_args(data);
+	ASSERT_EQ(0, data->exit_status);
 }
 
 TEST(FT_LS, handleArgs_oneArg_invalidOptionMinus) {
@@ -66,7 +69,8 @@ TEST(FT_LS, handleArgs_oneArg_invalidOptionMinus) {
 
 	data = init_data(argc, (char **)args);
 	CaptureStderr();
-	ASSERT_EQ(2, handle_args(data));
+	handle_args(data);
+	ASSERT_EQ(2, data->exit_status);
 
 	string		capture = GetCapturedStderr();
 
@@ -93,7 +97,8 @@ TEST(FT_LS, handleArgs_oneArg_invalidPath) {
 
 	data = init_data(argc, (char **)args);
 	CaptureStderr();
-	ASSERT_EQ(2, handle_args(data));
+	handle_args(data);
+	ASSERT_EQ(2, data->exit_status);
 
 	string		capture = GetCapturedStderr();
 
@@ -120,7 +125,8 @@ TEST(FT_LS, handleArgs_twoArgs_invalidPathThenValidFlag_pathError) {
 
 	data = init_data(argc, (char **)args);
 	CaptureStderr();
-	ASSERT_EQ(handle_args(data), 2);
+	handle_args(data);
+	ASSERT_EQ(2, data->exit_status);
 	string		capture = GetCapturedStderr();
 	ASSERT_EQ(capture, err);
 }
@@ -137,7 +143,8 @@ TEST(FT_LS, handleArgs_multiplePaths_sameNumberOfErrors) {
 					  "No such file or directory\n";
 	data = init_data(argc, (char **)args);
 	CaptureStderr();
-	ASSERT_EQ(2, handle_args(data));
+	handle_args(data);
+	ASSERT_EQ(2, data->exit_status);
 	string		capture = GetCapturedStderr();
 	ASSERT_EQ(capture, err);
 }
