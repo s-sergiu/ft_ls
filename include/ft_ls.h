@@ -38,6 +38,7 @@ t_data*			init_data(int, char**);
 void			execute(const char**);
 void			scan_directory(char[][NAME_MAXLEN], const char*);
 void			print_debug_info(void);
+void			print_data_info(t_data*);
 int				get_number_of_files(const char*);
 int				handle_args(t_data*);
 int				is_valid_flag(char*);
