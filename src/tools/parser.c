@@ -3,7 +3,7 @@
 // Store a path if valid;
 // Print error if invalid, dont exit;
 
-int		store_paths(t_data* data, void* content)
+int		store_paths(t_data** data, void* content)
 {
 	DIR*	stream;
 	char*	arg;
@@ -12,8 +12,9 @@ int		store_paths(t_data* data, void* content)
 	stream = opendir(arg);
 	if (!stream)
 	{
-		dir_error(errno, arg, data, 0);
-		return (2);
+		dir_error(errno, arg, (*data));
+		(*data)->exit_status = BADDIR;
+		return (BADDIR);
 	}
 	return (0);
 }	
@@ -45,29 +46,36 @@ void	lst_remove_path(t_list** list, void* content)
 // Then it resets the index of the arguments and starts parsing them to see if
 // they are paths and they are valid.
 
+void	is_valid_flag_or_add_path(t_data* data, char *argv)
+{
+	if (argv[0] == '-' && ft_isalnum(argv[1]))
+		is_valid_flag(argv);
+	else
+		ft_lstadd_back(&data->dirs, ft_lstnew(ft_strdup(argv)));
+}
+
+void	parse_path_list(t_data** data)
+{
+	t_list*	current;
+
+	current = (*data)->dirs;
+	while (current)
+	{
+		if (store_paths(data, current->content) == BADDIR)
+			lst_remove_path(&current, current->content);
+		current = current->next;
+	}
+}
+
 void	handle_args(t_data* data)
 {
 	int		index;
-	t_list*	current;
 
 	index = 1;
 	while (data->argv[index])
 	{
-		if (data->argv[index][0] == '-' && ft_isalnum(data->argv[index][1]))
-			is_valid_flag(data->argv[index]);
-		else
-			ft_lstadd_back(&data->dirs, ft_lstnew(ft_strdup(data->argv[index])));
+		is_valid_flag_or_add_path(data, data->argv[index]);
 		index++;
-	}
-	current = data->dirs;
-	while (current)
-	{
-		if (store_paths(data, current->content) == 2)
-		{
-			data->exit_status = 2;
-			lst_remove_path(&current, current->content);
-		}
-		current = current->next;
 	}
 }
 

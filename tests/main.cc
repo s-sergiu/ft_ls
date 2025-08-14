@@ -36,6 +36,7 @@ TEST(FT_LS, handleArgs_noArgs) {
 
 	data = init_data(argc, (char **)args);
 	handle_args(data);
+	parse_path_list(&data);
 	ASSERT_EQ(0, data->exit_status);
 }
 
@@ -47,6 +48,7 @@ TEST(FT_LS, handleArgs_oneArg_validPath) {
 	exec("mkdir newfile");
 	data = init_data(argc, (char **)args);
 	handle_args(data);
+	parse_path_list(&data);
 	ASSERT_EQ(0, data->exit_status);
 	exec("rmdir newfile");
 }
@@ -58,6 +60,7 @@ TEST(FT_LS, handleArgs_oneArg_validOption) {
 
 	data = init_data(argc, (char **)args);
 	handle_args(data);
+	parse_path_list(&data);
 	ASSERT_EQ(0, data->exit_status);
 }
 
@@ -70,7 +73,8 @@ TEST(FT_LS, handleArgs_oneArg_invalidOptionMinus) {
 	data = init_data(argc, (char **)args);
 	CaptureStderr();
 	handle_args(data);
-	ASSERT_EQ(2, data->exit_status);
+	parse_path_list(&data);
+	ASSERT_EQ(BADDIR, data->exit_status);
 
 	string		capture = GetCapturedStderr();
 
@@ -85,7 +89,7 @@ TEST(FT_LS, handleArgs_oneArg_invalidOption) {
 					  "Try 'ls --help' for more information.\n";
 
 	data = init_data(argc, (char **)args);
-	ASSERT_EXIT(handle_args(data), ExitedWithCode(2), Eq(err));
+	ASSERT_EXIT(handle_args(data), ExitedWithCode(BADFLAG), Eq(err));
 }
 
 TEST(FT_LS, handleArgs_oneArg_invalidPath) {
@@ -98,7 +102,8 @@ TEST(FT_LS, handleArgs_oneArg_invalidPath) {
 	data = init_data(argc, (char **)args);
 	CaptureStderr();
 	handle_args(data);
-	ASSERT_EQ(2, data->exit_status);
+	parse_path_list(&data);
+	ASSERT_EQ(BADDIR, data->exit_status);
 
 	string		capture = GetCapturedStderr();
 
@@ -113,7 +118,7 @@ TEST(FT_LS, handleArgs_twoArgs_invalidPathThenInvalidFlag_flagError) {
 					  "Try 'ls --help' for more information.\n";
 
 	data = init_data(argc, (char **)args);
-	ASSERT_EXIT(handle_args(data), ExitedWithCode(2), Eq(err));
+	ASSERT_EXIT(handle_args(data), ExitedWithCode(BADFLAG), Eq(err));
 }
 
 TEST(FT_LS, handleArgs_twoArgs_invalidPathThenValidFlag_pathError) {
@@ -126,7 +131,8 @@ TEST(FT_LS, handleArgs_twoArgs_invalidPathThenValidFlag_pathError) {
 	data = init_data(argc, (char **)args);
 	CaptureStderr();
 	handle_args(data);
-	ASSERT_EQ(2, data->exit_status);
+	parse_path_list(&data);
+	ASSERT_EQ(BADDIR, data->exit_status);
 	string		capture = GetCapturedStderr();
 	ASSERT_EQ(capture, err);
 }
@@ -144,7 +150,8 @@ TEST(FT_LS, handleArgs_multiplePaths_sameNumberOfErrors) {
 	data = init_data(argc, (char **)args);
 	CaptureStderr();
 	handle_args(data);
-	ASSERT_EQ(2, data->exit_status);
+	parse_path_list(&data);
+	ASSERT_EQ(BADDIR, data->exit_status);
 	string		capture = GetCapturedStderr();
 	ASSERT_EQ(capture, err);
 }
@@ -169,7 +176,8 @@ TEST(FT_LS, isValidFlagListWithInvalidFlagAtEnding) {
 	string		err = "ft_ls: invalid option -- 'z'\n"
 					  "Try 'ls --help' for more information.\n";
 
-	ASSERT_EXIT(is_valid_flag((char *)args[1]), ExitedWithCode(2), Eq(err));
+	ASSERT_EXIT(is_valid_flag((char *)args[1]), 
+				ExitedWithCode(BADFLAG), Eq(err));
 }
 
 TEST(FT_LS, isValidFlag_NULL_throwsError) {
@@ -183,7 +191,8 @@ TEST(FT_LS, isValidFlag_invalidFlag_throwsError) {
 	string		err = "ft_ls: invalid option -- 'z'\n"
 					  "Try 'ls --help' for more information.\n";
 
-	ASSERT_EXIT(is_valid_flag((char *)args[1]), ExitedWithCode(2), Eq(err));
+	ASSERT_EXIT(is_valid_flag((char *)args[1]), 
+				ExitedWithCode(BADFLAG), Eq(err));
 }
 
 // UNIT TESTS.

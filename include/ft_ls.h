@@ -21,6 +21,8 @@
 #define ACCESS_FLAG 11
 #define FLAG_HIDDEN 0x1
 #define FLAG_VISIBLE 0x2
+#define BADDIR 0x3
+#define BADFLAG 0x4
 
 typedef struct s_data t_data;
 typedef struct s_list t_dirs;
@@ -41,9 +43,10 @@ void			print_debug_info(void);
 void			print_data_info(t_data*);
 int				get_number_of_files(const char*);
 void			handle_args(t_data*);
+void			parse_path_list(t_data**);
 int				is_valid_flag(char*);
 void			flag_error(int, char*, int);
-void			dir_error(int, char*, t_data*, int);
+void			dir_error(int, char*, t_data*);
 void			destroy_data(t_data*);
 
 #endif

@@ -1,6 +1,6 @@
 #include "ft_ls.h"
 
-void	dir_error(int code, char* arg, t_data* data, int offset)
+void	dir_error(int code, char* arg, t_data* data)
 {
 	if (code == ENOENT)
 	{
@@ -8,8 +8,6 @@ void	dir_error(int code, char* arg, t_data* data, int offset)
 		write(2, ": cannot access '", 17);
 		ft_putstr_fd(arg, 2);
 		perror("'");
-		if (offset == 2)
-			exit(offset);
 	}
 }
 
@@ -21,6 +19,6 @@ void	flag_error(int code, char *arg, int i)
 		write(2, &arg[i], 1);
 		write(2, "'\n", 2);
 		write(2, "Try 'ls --help' for more information.\n", 38);
-		exit(2);
+		exit(BADFLAG);
 	}
 }

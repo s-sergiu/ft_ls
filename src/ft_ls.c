@@ -8,6 +8,7 @@ int		main(int argc, char **argv, char **envp)
 	data = init_data(argc, argv);
 	(void)envp;
 	handle_args(data);
+	parse_path_list(&data);
 	//print_data_info(data);
 	if (data->valid_dirs > 0)
 		execute((const char**)argv);
