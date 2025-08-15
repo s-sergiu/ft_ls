@@ -1,8 +1,5 @@
 #include "ft_ls.h"
 
-// Store a path if valid;
-// Print error if invalid, dont exit;
-
 int		store_paths(t_data** data, void* content)
 {
 	DIR*	stream;
@@ -42,9 +39,6 @@ void	lst_remove_path(t_list** list, void* content)
 		temp = temp->next;
 	}
 }
-// First it parses flags. If it encounters an invalid flag it exits code 2;
-// Then it resets the index of the arguments and starts parsing them to see if
-// they are paths and they are valid.
 
 void	is_valid_flag_or_add_path(t_data* data, char *argv)
 {
@@ -93,11 +87,6 @@ int		validated_flag(char flag)
 	}
 	return (1);
 }
-
-// Check if valid flag, if invalid exit immediately
-//
-// **argv:	entire main arguments
-// index:	index of the argument (always > 1);
 
 int		is_valid_flag(char *argv)
 {
