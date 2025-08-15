@@ -1,28 +1,20 @@
 #include "ft_ls.h"
 
-int		store_paths(t_data** data, void* content)
+int		store_paths(t_data** data, void* arg)
 {
-	DIR*	stream;
-	char*	arg;
+	DIR*	directory_stream;
+	char*	path;
 
-	arg = content;
-	stream = opendir(arg);
-	if (!stream)
+	path = arg;
+	directory_stream = opendir(arg);
+	if (!directory_stream)
 	{
-		dir_error(errno, arg, (*data));
+		dir_error(errno, path, (*data));
 		(*data)->exit_status = BADDIR;
 		return (BADDIR);
 	}
 	return (0);
 }	
-
-void	print_dirs(void* arg)
-{
-	char*	str;
-	str = arg;
-	if (str)
-		printf("str: %s\n", str);
-}
 
 void	lst_remove_path(t_list** list, void* content)
 {

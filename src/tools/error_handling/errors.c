@@ -2,9 +2,12 @@
 
 void	dir_error(int code, char* arg, t_data* data)
 {
+	char*	main;
+
+	main = data->argv[0] + 2;
 	if (code == ENOENT)
 	{
-		ft_putstr_fd(data->argv[0] + 2, 2);
+		ft_putstr_fd(main , 2);
 		write(2, ": cannot access '", 17);
 		ft_putstr_fd(arg, 2);
 		perror("'");
