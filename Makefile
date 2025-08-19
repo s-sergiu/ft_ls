@@ -9,11 +9,12 @@ VPATH=	libs/Libft:src:src/tools:src/tools/dir_tools:\
 
 # flags
 CFLAGS=		-Wall -Werror -Wextra -Ilibs/Libft/include -Iinclude #-Wpadded
-CPPFLAGS=	-Ilibs/Libft/include -Iinclude -I$(HOME)/.brew/include
+CPPFLAGS=	-Ilibs/Libft/include -Iinclude -I$(HOME)/.brew/include -I$(HOME)/repos/googletest/googletest/include
 
 # libraries
 SUBDIRS=	libs/Libft
 LIBFT=		$(SUBDIRS)/libft.a
+GTEST=		$(HOME)/repos/googletest/build/lib/libgtest.a
 
 # object files
 OBJ=	$(NAME).o \
@@ -37,8 +38,8 @@ $(NAME): $(OBJ) -lft
 test: $(CHECK) $(NAME)
 	@./$(CHECK)
 
-$(CHECK): $(TEST_OBJ) -lgtest -lft
-	$(CXX) $^ -o $@ 
+$(CHECK): $(TEST_OBJ) -lft
+	$(CXX) $^ $(GTEST) -o $@
 
 $(LIBFT):
 ifeq ($(shell git submodule status | awk '{print $1}' | head -c 1), -)
