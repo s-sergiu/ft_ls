@@ -3,7 +3,7 @@ project(ft_ls)
 
 # GoogleTest requires at least C++14
 set(CMAKE_CXX_STANDARD 17)
-set(GTEST_VERSION 1.16.0)
+set(GTEST_VERSION 1.17.0)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 include_directories("${CMAKE_SOURCE_DIR}/include"
 					"${CMAKE_SOURCE_DIR}/libs/Libft/include")
@@ -12,8 +12,8 @@ include(FetchContent)
 FetchContent_Declare(
   googletest
   URL https://github.com/google/googletest/releases/download/v${GTEST_VERSION}/googletest-${GTEST_VERSION}.tar.gz
-  DOWNLOAD_EXTRACT_TIMESTAMP TRUE
 )
+# DOWNLOAD_EXTRACT_TIMESTAMP TRUE
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
