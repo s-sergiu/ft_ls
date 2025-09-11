@@ -7,7 +7,6 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <string.h>
-#include <stdio.h>
 
 #define T_FILE 8
 #define T_FOLDER 4

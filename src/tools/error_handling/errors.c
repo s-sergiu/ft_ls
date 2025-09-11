@@ -10,7 +10,9 @@ void	dir_error(int code, char* arg, t_data* data)
 		ft_putstr_fd(main , 2);
 		write(2, ": cannot access '", 17);
 		ft_putstr_fd(arg, 2);
-		perror("'");
+		ft_putstr_fd("': ", 2);
+		ft_putstr_fd(strerror(code), 2);
+		ft_putstr_fd("\n", 2);
 	}
 }
 

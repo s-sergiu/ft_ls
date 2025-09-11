@@ -8,7 +8,7 @@ VPATH=	libs/Libft:src:src/tools:src/tools/dir_tools:\
 		src/tools/error_handling:tests
 
 # flags
-CFLAGS=		-Wall -Werror -Wextra -Ilibs/Libft/include -Iinclude #-Wpadded
+CFLAGS=		-Wall -Werror -Wextra -Ilibs/Libft/include -Iinclude -g #-Wpadded
 CPPFLAGS=	-Ilibs/Libft/include -Iinclude -I$(HOME)/.brew/include
 
 # libraries

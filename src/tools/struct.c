@@ -14,7 +14,6 @@ t_data*	init_data(int argc, char** argv) {
 		data->argv[index] = ft_strdup(argv[index]);
 		index++;
 	}
-	data->argv[index] = NULL;
 	data->exit_status = EXIT_SUCCESS;
 	data->valid_dirs = 0;
 	data->dirs = NULL;
@@ -27,12 +26,16 @@ void	destroy_data(t_data* data)
 	int	index;
 
 	index = 0;
-	while(data->argv[index])
+	while(index < data->argc)
 	{
 		free(data->argv[index]);
 		data->argv[index] = NULL;
 		index++;
 	}
 	free(data->argv);
+	ft_lstclear(&data->dirs, free);
+	free(data->dirs);
 	data->argv = NULL;
+	free(data);
+	data = NULL;
 }

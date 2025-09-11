@@ -13,6 +13,7 @@ int		store_paths(t_data** data, void* arg)
 		(*data)->exit_status = BADDIR;
 		return (BADDIR);
 	}
+	closedir(directory_stream);
 	return (0);
 }	
 
@@ -58,7 +59,7 @@ void	handle_args(t_data* data)
 	int		index;
 
 	index = 1;
-	while (data->argv[index])
+	while (index < data->argc)
 	{
 		is_valid_flag_or_add_path(data, data->argv[index]);
 		index++;
