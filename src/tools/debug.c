@@ -25,7 +25,7 @@ void	print_data_info(t_data* data)
 	ft_printf("argc is: %d\n", data->argc);
 	ft_printf("--------------------------------------\n");
 	ft_printf("\n----------Argv------------------------\n");
-	while (data->argv[i])
+	while (i < data->argc) 
 	{
 		ft_printf("argv[%d] is: %s\n", i, data->argv[i]);
 		i++;

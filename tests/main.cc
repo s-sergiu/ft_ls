@@ -139,7 +139,7 @@ TEST(FT_LS, handleArgs_twoArgs_invalidPathThenValidFlag_pathError) {
 
 TEST(FT_LS, handleArgs_multiplePaths_sameNumberOfErrors) {
 	t_data*		data;
-	int			argc = 5;
+	int			argc = 4;
 	const char*	args[argc] = {"./ft_ls", "xxx", "xyz", "yyy", NULL};
 	string		err = "ft_ls: cannot access 'xxx': "
 					  "No such file or directory\n"

@@ -26,6 +26,7 @@ OBJ=	$(NAME).o \
 TEST_OBJ=	main.o \
 			utils.o \
 			struct.o \
+			debug.o \
 			errors.o \
 			parser.o \
 

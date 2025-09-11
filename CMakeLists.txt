@@ -31,7 +31,7 @@ add_library(ft STATIC libs/Libft/src/ft_printf.c libs/Libft/src/ft_strlcat.c
 			libs/Libft/src/ft_isalnum.c libs/Libft/src/ft_strdup.c
 			libs/Libft/src/ft_isalpha.c libs/Libft/src/ft_lstnew.c
 			libs/Libft/src/ft_lstadd_back.c libs/Libft/src/ft_isdigit.c
-			libs/Libft/include/libft.h)
+			libs/Libft/src/ft_lstclear.c libs/Libft/include/libft.h)
 
 add_executable(
   hello_test
