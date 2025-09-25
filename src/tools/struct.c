@@ -1,12 +1,17 @@
 
 #include "ft_ls.h"
 
-t_data*	init_data(int argc, char** argv) {
+t_data*	init_data(int argc, char** argv, char** envp) {
 	t_data*	data;
 	int		index;
+	int		i;
 
 	index = 0;
+	i = 0;
+	while (ft_strncmp(envp[i], "PWD", 3))
+		i++;
 	data = (t_data *)malloc(sizeof(t_data));
+	data->pwd = envp[i];
 	data->argc = argc;
 	data->argv = (char **)malloc(sizeof(char *) * argc);
 	while (argv[index])

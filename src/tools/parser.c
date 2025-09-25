@@ -50,6 +50,8 @@ void	parse_path_list(t_data** data)
 	{
 		if (store_paths(data, current->content) == BADDIR)
 			lst_remove_path(&current, current->content);
+		else
+			(*data)->valid_dirs++;
 		current = current->next;
 	}
 }

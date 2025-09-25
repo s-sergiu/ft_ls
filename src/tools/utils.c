@@ -82,16 +82,18 @@ void	output_directory(char arr[][NAME_MAXLEN])
 	}
 }
 
-void	execute(const char **argv)
+void	execute(t_data* data, int i)
 {
 	char	(*arr)[NAME_MAXLEN];
 	int		size;
 
-	size = get_number_of_files(argv[1]);
+	i++;
+
+	size = get_number_of_files(data->argv[i]);
 	arr = malloc(size * sizeof *arr);
 	if (!arr)
 		return ;
-	scan_directory(arr, argv[1]);
+	scan_directory(arr, data->argv[i]);
 	output_directory(arr);
 	if (is_output_a_terminal())
 		write(1, "\n", 1);

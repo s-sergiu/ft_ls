@@ -21,7 +21,7 @@ void	print_data_info(t_data* data)
 
 	ft_printf("\n----------Variables-------------------\n");
 	ft_printf("exit_status is: %d\n", data->exit_status);
-	ft_printf("valid dirs is: %s\n", data->valid_dirs);
+	ft_printf("valid dirs is: %d\n", data->valid_dirs);
 	ft_printf("argc is: %d\n", data->argc);
 	ft_printf("--------------------------------------\n");
 	ft_printf("\n----------Argv------------------------\n");

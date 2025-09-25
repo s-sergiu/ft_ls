@@ -31,12 +31,13 @@ struct s_data {
 	int		valid_dirs;
 	int		argc;
 	char**	argv;
+	char*	pwd;
 	t_dirs*	dirs;
 };
 
 int				is_output_a_terminal();
-t_data*			init_data(int, char**);
-void			execute(const char**);
+t_data*			init_data(int, char**, char**);
+void			execute(t_data*, int);
 void			scan_directory(char[][NAME_MAXLEN], const char*);
 void			print_debug_info(void);
 void			print_data_info(t_data*);
