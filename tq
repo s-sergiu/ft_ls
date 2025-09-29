@@ -1,0 +1,109 @@
+[1mdiff --git a/src/ft_ls.c b/src/ft_ls.c[m
+[1mindex 862237f..24b2e40 100644[m
+[1m--- a/src/ft_ls.c[m
+[1m+++ b/src/ft_ls.c[m
+[36m@@ -14,6 +14,7 @@[m [mint		main(int argc, char **argv, char **envp)[m
+ 	handle_args(data);[m
+ 	parse_path_list(&data);[m
+ 	if (data->valid_dirs > 0)[m
+[32m+[m	[32m{[m
+ 		while (i < data->valid_dirs)[m
+ 		{[m
+ 			if (argc > 2)[m
+[36m@@ -25,6 +26,9 @@[m [mint		main(int argc, char **argv, char **envp)[m
+ 			if (is_output_a_terminal() && i < data->valid_dirs)[m
+ 				write(1, "\n", 1);[m
+ 		}[m
+[32m+[m	[32m}[m
+[32m+[m	[32melse[m
+[32m+[m		[32mexecute(data, 0);[m
+ 	exit_status = data->exit_status;[m
+ 	destroy_data(data);[m
+ [m
+[1mdiff --git a/src/tools/struct.c b/src/tools/struct.c[m
+[1mindex cbd9ad6..efc9737 100644[m
+[1m--- a/src/tools/struct.c[m
+[1m+++ b/src/tools/struct.c[m
+[36m@@ -1,17 +1,24 @@[m
+ [m
+ #include "ft_ls.h"[m
+ [m
+[32m+[m[32mchar*	extract_pwd(char **envp)[m
+[32m+[m[32m{[m[41m	[m
+[32m+[m	[32mwhile (*envp)[m
+[32m+[m	[32m{[m
+[32m+[m		[32mif (!ft_strncmp(*envp, "PWD=", 4))[m
+[32m+[m			[32mreturn (ft_strdup(*envp + 4));[m
+[32m+[m		[32menvp++;[m
+[32m+[m	[32m}[m
+[32m+[m	[32mreturn (NULL);[m
+[32m+[m[32m}[m
+[32m+[m
+ t_data*	init_data(int argc, char** argv, char** envp) {[m
+ 	t_data*	data;[m
+ 	int		index;[m
+[31m-	int		i;[m
+ [m
+ 	index = 0;[m
+[31m-	i = 0;[m
+[31m-	while (ft_strncmp(envp[i], "PWD", 3))[m
+[31m-		i++;[m
+ 	data = (t_data *)malloc(sizeof(t_data));[m
+[31m-	data->pwd = envp[i];[m
+[32m+[m	[32mdata->pwd = extract_pwd(envp);[m
+ 	data->argc = argc;[m
+ 	data->argv = (char **)malloc(sizeof(char *) * argc);[m
+ 	while (argv[index])[m
+[36m@@ -38,6 +45,7 @@[m [mvoid	destroy_data(t_data* data)[m
+ 		index++;[m
+ 	}[m
+ 	free(data->argv);[m
+[32m+[m	[32mfree(data->pwd);[m
+ 	ft_lstclear(&data->dirs, free);[m
+ 	free(data->dirs);[m
+ 	data->argv = NULL;[m
+[1mdiff --git a/src/tools/utils.c b/src/tools/utils.c[m
+[1mindex 6b975cf..ddbc2a7 100644[m
+[1m--- a/src/tools/utils.c[m
+[1m+++ b/src/tools/utils.c[m
+[36m@@ -9,6 +9,7 @@[m [mint		get_number_of_files(const char *args)[m
+ 	if (!args)[m
+ 		return (0);[m
+ 	i = 0;[m
+[32m+[m	[32mft_memset(&stream, 0, sizeof(stream));[m
+ 	stream = opendir(args);[m
+ 	if (!stream)[m
+ 		return (-1);[m
+[36m@@ -48,6 +49,7 @@[m [mvoid	scan_directory(char arr[][NAME_MAXLEN], const char *arg)[m
+ 		entry = readdir(stream);[m
+ 		i++;[m
+ 	}[m
+[32m+[m	[32mft_memset(arr[i], 0, sizeof(arr[i]));[m
+ 	closedir(stream);[m
+ }[m
+ [m
+[36m@@ -86,15 +88,21 @@[m [mvoid	execute(t_data* data, int i)[m
+ {[m
+ 	char	(*arr)[NAME_MAXLEN];[m
+ 	int		size;[m
+[32m+[m	[32mchar	*path;[m
+ [m
+ 	i++;[m
+[31m-[m
+[31m-	size = get_number_of_files(data->argv[i]);[m
+[32m+[m	[32mif (data->argc == 1)[m
+[32m+[m		[32mpath = data->pwd;[m
+[32m+[m	[32melse[m
+[32m+[m		[32mpath = data->argv[i];[m
+[32m+[m	[32msize = get_number_of_files(path);[m
+[32m+[m	[32msize++;[m
+ 	arr = malloc(size * sizeof *arr);[m
+ 	if (!arr)[m
+ 		return ;[m
+[31m-	scan_directory(arr, data->argv[i]);[m
+[32m+[m	[32mscan_directory(arr, path);[m
+ 	output_directory(arr);[m
+ 	if (is_output_a_terminal())[m
+ 		write(1, "\n", 1);[m
+[32m+[m	[32mfree(arr);[m
+ }[m

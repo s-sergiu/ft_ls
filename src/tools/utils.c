@@ -9,6 +9,7 @@ int		get_number_of_files(const char *args)
 	if (!args)
 		return (0);
 	i = 0;
+	ft_memset(&stream, 0, sizeof(stream));
 	stream = opendir(args);
 	if (!stream)
 		return (-1);
@@ -48,6 +49,7 @@ void	scan_directory(char arr[][NAME_MAXLEN], const char *arg)
 		entry = readdir(stream);
 		i++;
 	}
+	ft_memset(arr[i], 0, sizeof(arr[i]));
 	closedir(stream);
 }
 
@@ -86,15 +88,21 @@ void	execute(t_data* data, int i)
 {
 	char	(*arr)[NAME_MAXLEN];
 	int		size;
+	char	*path;
 
 	i++;
-
-	size = get_number_of_files(data->argv[i]);
+	if (data->argc == 1)
+		path = data->pwd;
+	else
+		path = data->argv[i];
+	size = get_number_of_files(path);
+	size++;
 	arr = malloc(size * sizeof *arr);
 	if (!arr)
 		return ;
-	scan_directory(arr, data->argv[i]);
+	scan_directory(arr, path);
 	output_directory(arr);
 	if (is_output_a_terminal())
 		write(1, "\n", 1);
+	free(arr);
 }

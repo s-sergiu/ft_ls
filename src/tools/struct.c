@@ -1,17 +1,24 @@
 
 #include "ft_ls.h"
 
+char*	extract_pwd(char **envp)
+{
+	while (*envp)
+	{
+		if (!ft_strncmp(*envp, "PWD=", 4))
+			return (ft_strdup(*envp + 4));
+		envp++;
+	}
+	return (NULL);
+}
+
 t_data*	init_data(int argc, char** argv, char** envp) {
 	t_data*	data;
 	int		index;
-	int		i;
 
 	index = 0;
-	i = 0;
-	while (ft_strncmp(envp[i], "PWD", 3))
-		i++;
 	data = (t_data *)malloc(sizeof(t_data));
-	data->pwd = envp[i];
+	data->pwd = extract_pwd(envp);
 	data->argc = argc;
 	data->argv = (char **)malloc(sizeof(char *) * argc);
 	while (argv[index])
@@ -38,6 +45,7 @@ void	destroy_data(t_data* data)
 		index++;
 	}
 	free(data->argv);
+	free(data->pwd);
 	ft_lstclear(&data->dirs, free);
 	free(data->dirs);
 	data->argv = NULL;
